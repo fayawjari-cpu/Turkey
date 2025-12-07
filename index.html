@@ -3,11 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هشاشة العظام - جامعة حفر الباطن</title>
+    <title>هشاشة العظام المبكرة - جامعة حفر الباطن</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Cairo:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#1a6b8c',
+                            light: '#2a8db7',
+                            dark: '#0f4a6e',
+                        },
+                        secondary: {
+                            DEFAULT: '#2ecc71',
+                            light: '#5de59c',
+                            dark: '#27ae60',
+                        },
+                        accent: {
+                            DEFAULT: '#d4af37',
+                            light: '#f0c869',
+                            dark: '#b8941c',
+                        },
+                        bone: {
+                            light: '#f0ede5',
+                            DEFAULT: '#d4c9b8',
+                            dark: '#b8a58c',
+                        },
+                        sidebar: 'hsl(215 50% 25%)',
+                        'sidebar-foreground': 'hsl(200 20% 98%)',
+                        destructive: 'hsl(0 72% 55%)',
+                    },
+                    fontFamily: {
+                        'tajawal': ['Tajawal', 'sans-serif'],
+                        'cairo': ['Cairo', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px rgba(0, 0, 0, 0.05)',
+                        'medium': '0 10px 25px rgba(0, 0, 0, 0.08)',
+                        'hard': '0 20px 40px rgba(0, 0, 0, 0.12)',
+                    },
+                    borderRadius: {
+                        'xl': '15px',
+                        '2xl': '20px',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* التصميم العام */
+        /* متغيرات CSS المخصصة */
+        :root {
+            --background: hsl(200 20% 98%);
+            --foreground: hsl(215 25% 15%);
+            --border: hsl(200 15% 90%);
+            --card: hsl(0 0% 100%);
+            --card-foreground: hsl(215 25% 15%);
+            --primary: hsl(215 70% 45%);
+            --primary-foreground: hsl(0 0% 100%);
+            --secondary: hsl(175 50% 42%);
+            --muted: hsl(200 15% 92%);
+            --muted-foreground: hsl(215 15% 45%);
+            --accent: hsl(175 45% 90%);
+            --accent-foreground: hsl(175 50% 25%);
+            --destructive: hsl(0 72% 55%);
+            --ring: hsl(215 70% 45%);
+            --chart-1: hsl(215 70% 45%);
+            --chart-2: hsl(175 60% 42%);
+            --chart-3: hsl(280 65% 55%);
+            --sidebar: hsl(215 50% 25%);
+            --sidebar-foreground: hsl(200 20% 98%);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -16,861 +87,1030 @@
 
         body {
             font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--background);
+            color: var(--foreground);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
+        /* فصول Tailwind المخصصة */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .medical-gradient {
+            background: linear-gradient(135deg, #1a6b8c 0%, #0f4a6e 100%);
+        }
+
+        .bone-gradient {
+            background: linear-gradient(135deg, #f0ede5 0%, #d4c9b8 100%);
+        }
+
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hard);
+        }
+
         /* شريط التنقل */
         .navbar {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .slide-indicator .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted-foreground);
+            opacity: 0.3;
             transition: all 0.3s ease;
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 80px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            text-decoration: none;
-        }
-
-        .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-        }
-
-        .logo-text h1 {
-            color: #333;
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .university {
-            color: #764ba2;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        /* قائمة التنقل */
-        .nav-menu {
-            display: flex;
-            gap: 5px;
-            list-style: none;
-        }
-
-        .nav-link {
-            color: #333;
-            text-decoration: none;
-            padding: 12px 25px;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nav-link:hover {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .nav-link.active {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        /* أزرار اللغة */
-        .language-switcher {
-            display: flex;
-            gap: 10px;
-            background: rgba(102, 126, 234, 0.1);
-            padding: 5px;
-            border-radius: 30px;
-        }
-
-        .lang-btn {
-            background: transparent;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 25px;
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            color: #333;
         }
 
-        .lang-btn:hover {
-            background: rgba(102, 126, 234, 0.2);
-        }
-
-        .lang-btn.active {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        /* الصفحات */
-        .page {
-            min-height: 100vh;
-            padding-top: 80px;
-            position: absolute;
-            width: 100%;
-            opacity: 0;
-            transform: translateY(20px);
-            pointer-events: none;
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .page.active {
+        .slide-indicator .dot.active {
             opacity: 1;
-            transform: translateY(0);
-            pointer-events: all;
-            position: relative;
+            background: var(--primary);
+            transform: scale(1.2);
         }
 
-        .page-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 60px 30px;
-        }
-
-        /* الصور الحقيقية */
-        .real-image {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            transition: transform 0.5s ease;
-            margin-bottom: 40px;
-        }
-
-        .real-image:hover {
-            transform: scale(1.02);
-        }
-
-        /* حركات الانتقال */
-        .page-transition {
-            animation: pageTransition 0.6s ease;
-        }
-
-        @keyframes pageTransition {
-            0% {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* بطاقات */
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
-        }
-
-        .card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            transition: all 0.4s ease;
-            position: relative;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
-        }
-
-        .card-image {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .card:hover .card-image {
-            transform: scale(1.1);
-        }
-
-        .card-content {
-            padding: 30px;
-            position: relative;
-        }
-
-        .card-icon {
-            position: absolute;
-            top: -25px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-        }
-
-        /* أقسام المعلومات */
-        .info-section {
-            background: white;
-            border-radius: 25px;
-            padding: 50px;
-            margin: 40px 0;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        /* الشريحة الأولى */
+        .hero-slide {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             position: relative;
             overflow: hidden;
         }
 
-        .info-section::before {
+        .hero-slide::before {
             content: '';
             position: absolute;
             top: 0;
+            left: 0;
             right: 0;
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            border-radius: 0 0 0 100%;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
         }
 
-        /* فريق العمل */
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
+        /* بطاقات الفريق */
+        .team-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .team-member {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            transition: all 0.4s ease;
+        /* الأقسام القابلة للطي */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
         }
 
-        .team-member:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        .accordion.active .accordion-content {
+            max-height: 500px;
         }
 
-        .member-avatar {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 40px;
+        /* الرسوم البيانية */
+        .chart-container {
+            background: var(--card);
+            border: 1px solid var(--border);
         }
 
-        /* التذييل */
-        footer {
-            background: #1a1a2e;
-            color: white;
-            padding: 60px 0 30px;
-            margin-top: 60px;
+        /* إخفاء شريط التمرير */
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 30px;
-            text-align: center;
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
         }
 
-        .footer-logo {
-            font-size: 50px;
-            color: #667eea;
-            margin-bottom: 20px;
-            display: inline-block;
+        /* زر الحساب */
+        .calc-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            transition: all 0.3s ease;
         }
 
-        .footer-university {
-            color: #764ba2;
-            font-size: 20px;
-            font-weight: 600;
-            margin: 20px 0;
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(26, 107, 140, 0.3);
+        }
+
+        /* تأثيرات متحركة */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease forwards;
         }
 
         /* تصميم متجاوب */
-        @media (max-width: 992px) {
-            .nav-container {
-                flex-direction: column;
-                height: auto;
-                padding: 20px;
+        @media (max-width: 768px) {
+            .slide-content {
+                padding: 2rem 1rem !important;
             }
             
-            .nav-menu {
-                margin: 20px 0;
-                flex-wrap: wrap;
-                justify-content: center;
+            .hero-title {
+                font-size: 2.5rem !important;
             }
             
-            .page-content {
-                padding-top: 120px;
-            }
-            
-            .cards-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .info-section {
-                padding: 30px;
+            .hero-subtitle {
+                font-size: 1.25rem !important;
             }
         }
 
-        @media (max-width: 768px) {
-            .nav-link {
-                padding: 10px 15px;
-                font-size: 14px;
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem !important;
             }
             
-            .language-switcher {
-                margin-top: 20px;
-            }
-            
-            .page-content {
-                padding: 30px 20px;
-            }
-            
-            .real-image {
-                height: 300px;
+            .content-card {
+                padding: 1.5rem !important;
             }
         }
     </style>
 </head>
-<body>
+<body dir="rtl" class="font-cairo">
     <!-- شريط التنقل -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#" class="logo" onclick="showPage('home'); return false;">
-                <div class="logo-icon">
-                    <i class="fas fa-bone"></i>
-                </div>
-                <div class="logo-text">
-                    <h1 id="site-title">هشاشة العظام</h1>
-                    <div class="university" id="university-name">جامعة حفر الباطن</div>
-                </div>
-            </a>
+    <nav class="navbar fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <a href="#slide1" onclick="goToSlide(0)" class="w-12 h-12 rounded-full bg-white shadow-soft border border-gray-100 flex items-center justify-center text-gray-700 hover:text-primary hover:border-primary transition-all duration-300 hover-lift">
+                    <i class="fas fa-home text-lg"></i>
+                </a>
+            </div>
             
-            <ul class="nav-menu">
-                <li><a href="#" class="nav-link active" onclick="showPage('home'); return false;" id="nav-home">الرئيسية</a></li>
-                <li><a href="#" class="nav-link" onclick="showPage('about'); return false;" id="nav-about">عن المرض</a></li>
-                <li><a href="#" class="nav-link" onclick="showPage('symptoms'); return false;" id="nav-symptoms">الأعراض</a></li>
-                <li><a href="#" class="nav-link" onclick="showPage('prevention'); return false;" id="nav-prevention">الوقاية</a></li>
-                <li><a href="#" class="nav-link" onclick="showPage('team'); return false;" id="nav-team">فريق العمل</a></li>
-            </ul>
+            <div class="slide-indicator flex items-center space-x-2 space-x-reverse">
+                <!-- سيتم إضافة النقاط ديناميكيًا -->
+            </div>
             
-            <div class="language-switcher">
-                <button class="lang-btn active" id="lang-ar" onclick="changeLanguage('ar')">العربية</button>
-                <button class="lang-btn" id="lang-en" onclick="changeLanguage('en')">English</button>
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <span class="text-sm font-medium text-gray-600" id="slide-counter">1 / 10</span>
+                <div class="flex bg-gray-100 rounded-full p-1">
+                    <button onclick="changeLanguage('ar')" class="lang-btn-ar px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 bg-primary text-white">
+                        العربية
+                    </button>
+                    <button onclick="changeLanguage('en')" class="lang-btn-en px-4 py-1.5 rounded-full text-sm font-semibold text-gray-600 transition-all duration-300">
+                        English
+                    </button>
+                </div>
             </div>
         </div>
+        <div class="progress-bar absolute bottom-0 left-0 h-1 bg-gradient-to-r from-primary to-secondary transition-all duration-300" id="progress-bar"></div>
     </nav>
 
-    <!-- الصفحة الرئيسية -->
-    <div id="page-home" class="page active page-transition">
-        <div class="page-content">
-            <div class="info-section">
-                <h2 id="home-title" style="color: #667eea; font-size: 36px; margin-bottom: 20px;">هشاشة العظام: المرض الصامت</h2>
-                <p id="home-description" style="font-size: 18px; line-height: 1.8; color: #666; margin-bottom: 30px;">
-                    هشاشة العظام هي حالة تضعف العظام وتجعلها هشة وأكثر عرضة للكسر. تعرف على أسبابها وأعراضها وطرق الوقاية منها.
+    <!-- أزرار التنقل الجانبية -->
+    <button onclick="prevSlide()" id="prev-btn" class="fixed left-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-white shadow-hard border border-gray-200 flex items-center justify-center text-gray-700 hover:text-primary hover:border-primary transition-all duration-300 hover-lift hidden md:flex">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    
+    <button onclick="nextSlide()" id="next-btn" class="fixed right-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-white shadow-hard border border-gray-200 flex items-center justify-center text-gray-700 hover:text-primary hover:border-primary transition-all duration-300 hover-lift hidden md:flex">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+
+    <!-- حاوية الشرائح -->
+    <div class="slide-container pt-20" id="slide-container">
+        <!-- الشريحة 1: الغلاف -->
+        <div class="slide min-h-screen hero-slide" id="slide1">
+            <div class="absolute top-8 right-8 z-10 flex items-center space-x-4 space-x-reverse">
+                <div class="w-16 h-16 bg-white rounded-2xl shadow-hard flex items-center justify-center">
+                    <i class="fas fa-university text-3xl text-primary"></i>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold text-lg" id="university-name">جامعة حفر الباطن</h3>
+                    <p class="text-white/80 text-sm" id="department-name">قسم التصميم الجذاب للويب</p>
+                </div>
+            </div>
+            
+            <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 text-center">
+                <h1 class="hero-title text-white font-tajawal font-bold text-6xl mb-6" id="main-title">
+                    هشاشة العظام المبكرة
+                    <div class="text-3xl mt-4 opacity-90" id="main-subtitle">التشخيص والوقاية في مرحلة مبكرة</div>
+                </h1>
+                
+                <p class="hero-subtitle text-white/90 text-2xl mb-12 max-w-3xl mx-auto" id="cover-description">
+                    عرض تفاعلي توعوي حول تشخيص ووقاية مرض هشاشة العظام في مراحله المبكرة
                 </p>
                 
-                <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=1200&h=500&fit=crop&crop=center" 
-                     alt="هشاشة العظام" 
-                     class="real-image">
-                
-                <div class="cards-container">
-                    <div class="card">
-                        <img src="https://images.unsplash.com/photo-1516549655669-df565bc5d9e7?w=600&h=400&fit=crop" 
-                             alt="عظام صحية" 
-                             class="card-image">
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <i class="fas fa-question-circle"></i>
-                            </div>
-                            <h3 id="card1-title">ما هي هشاشة العظام؟</h3>
-                            <p id="card1-text">مرض يصيب العظام ويؤدي إلى ضعفها وزيادة احتمالية كسرها نتيجة انخفاض كثافة العظام.</p>
-                        </div>
+                <div class="team-grid grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                    <div class="team-card rounded-2xl p-6 hover-lift">
+                        <i class="fas fa-user-md text-4xl text-white mb-4"></i>
+                        <h3 class="text-white font-bold text-xl mb-2" id="supervisor-name">د. محمد العنزي</h3>
+                        <p class="text-white/80" id="supervisor-role">المشرف الأكاديمي</p>
                     </div>
                     
-                    <div class="card">
-                        <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&h=400&fit=crop" 
-                             alt="فحص طبي" 
-                             class="card-image">
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <i class="fas fa-user-md"></i>
-                            </div>
-                            <h3 id="card2-title">من يصاب بالمرض؟</h3>
-                            <p id="card2-text">يصيب النساء بعد سن اليأس بشكل خاص، لكنه قد يصيب الرجال أيضًا بسبب عوامل مختلفة.</p>
-                        </div>
+                    <div class="team-card rounded-2xl p-6 hover-lift">
+                        <i class="fas fa-user-graduate text-4xl text-white mb-4"></i>
+                        <h3 class="text-white font-bold text-xl mb-2">تركي الجدعان</h3>
+                        <p class="text-white/80" id="student-role1">طالب - قسم التصميم الجذاب للويب</p>
                     </div>
                     
-                    <div class="card">
-                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop" 
-                             alt="وقاية" 
-                             class="card-image">
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h3 id="card3-title">كيفية الوقاية</h3>
-                            <p id="card3-text">الوقاية ممكنة من خلال التغذية السليمة والرياضة وتجنب التدخين.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- صفحة عن المرض -->
-    <div id="page-about" class="page">
-        <div class="page-content">
-            <div class="info-section">
-                <h2 id="about-title" style="color: #667eea; font-size: 36px; margin-bottom: 30px;">عن مرض هشاشة العظام</h2>
-                
-                <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&h=500&fit=crop" 
-                     alt="تشخيص هشاشة العظام" 
-                     class="real-image">
-                
-                <div style="margin: 40px 0;">
-                    <h3 id="what-is-title" style="color: #764ba2; margin-bottom: 20px;">ما هو مرض هشاشة العظام؟</h3>
-                    <p id="what-is-text" style="font-size: 18px; line-height: 1.8; color: #666; margin-bottom: 30px;">
-                        هشاشة العظام (Osteoporosis) هي حالة مرضية تضعف العظام وتجعلها هشة وأكثر عرضة للكسر. يحدث هذا المرض نتيجة فقدان العظام لكثافتها وللمكونات المعدنية فيها.
-                    </p>
-                    
-                    <h3 id="causes-title" style="color: #764ba2; margin-bottom: 20px;">الأسباب الرئيسية</h3>
-                    <ul id="causes-list" style="font-size: 18px; line-height: 1.8; color: #666; padding-right: 20px;">
-                        <li>التقدم في العمر</li>
-                        <li>انخفاض مستويات الهرمونات</li>
-                        <li>نقص الكالسيوم وفيتامين د</li>
-                        <li>قلة النشاط البدني</li>
-                        <li>التدخين والكحول</li>
-                    </ul>
-                </div>
-                
-                <img src="https://images.unsplash.com/photo-1516549655669-df565bc5d9e7?w=1200&h=400&fit=crop" 
-                     alt="صحة العظام" 
-                     class="real-image">
-            </div>
-        </div>
-    </div>
-
-    <!-- صفحة الأعراض -->
-    <div id="page-symptoms" class="page">
-        <div class="page-content">
-            <div class="info-section">
-                <h2 id="symptoms-title" style="color: #667eea; font-size: 36px; margin-bottom: 30px;">أعراض هشاشة العظام</h2>
-                
-                <img src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=1200&h=500&fit=crop" 
-                     alt="ألم الظهر" 
-                     class="real-image">
-                
-                <div class="cards-container">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <i class="fas fa-bone"></i>
-                            </div>
-                            <h3>كسور العظام</h3>
-                            <p>كسر العظام بسهولة أكبر من المتوقع، خاصة في الورك والرسغ والعمود الفقري</p>
-                        </div>
+                    <div class="team-card rounded-2xl p-6 hover-lift">
+                        <i class="fas fa-user-graduate text-4xl text-white mb-4"></i>
+                        <h3 class="text-white font-bold text-xl mb-2">رائد الغامدي</h3>
+                        <p class="text-white/80" id="student-role2">طالب - قسم التصميم الجذاب للويب</p>
                     </div>
                     
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <i class="fas fa-ruler"></i>
-                            </div>
-                            <h3>فقدان الطول</h3>
-                            <p>فقدان الطول مع مرور الوقت (أكثر من 3 سم)</p>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <h3>انحناء الظهر</h3>
-                            <p>انحناء الوقفة وانحناء الظهر للأمام (حدبة الأرملة)</p>
-                        </div>
+                    <div class="team-card rounded-2xl p-6 hover-lift">
+                        <i class="fas fa-user-graduate text-4xl text-white mb-4"></i>
+                        <h3 class="text-white font-bold text-xl mb-2">عبداللطيف الغامدي</h3>
+                        <p class="text-white/80" id="student-role3">طالب - قسم التصميم الجذاب للويب</p>
                     </div>
                 </div>
                 
-                <div style="margin-top: 40px;">
-                    <h3 id="diagnosis-title" style="color: #764ba2; margin-bottom: 20px;">التشخيص</h3>
-                    <p id="diagnosis-text" style="font-size: 18px; line-height: 1.8; color: #666;">
-                        يتم تشخيص هشاشة العظام عن طريق قياس كثافة العظام باستخدام جهاز DEXA. ينصح بإجراء الفحص للنساء فوق 65 سنة والرجال فوق 70 سنة.
+                <div class="border-t border-white/20 pt-8 mt-8">
+                    <p class="text-white/80 text-lg" id="supervision-text">
+                        مشروع توعوي تحت إشراف قسم التصميم الجذاب للويب - جامعة حفر الباطن
                     </p>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- صفحة الوقاية -->
-    <div id="page-prevention" class="page">
-        <div class="page-content">
-            <div class="info-section">
-                <h2 id="prevention-title" style="color: #667eea; font-size: 36px; margin-bottom: 30px;">الوقاية والعلاج</h2>
+        <!-- الشريحة 2: تعريف المرض -->
+        <div class="slide min-h-screen flex items-center bg-gradient-to-br from-gray-50 to-white" id="slide2">
+            <div class="max-w-6xl mx-auto px-6 py-12">
+                <h2 class="text-4xl font-bold text-center mb-12 text-primary" id="slide2-title">ما هي هشاشة العظام المبكرة؟</h2>
                 
-                <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&h=500&fit=crop" 
-                     alt="الوقاية من هشاشة العظام" 
-                     class="real-image">
-                
-                <div class="cards-container">
-                    <div class="card">
-                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop" 
-                             alt="تغذية صحية" 
-                             class="card-image">
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <i class="fas fa-utensils"></i>
-                            </div>
-                            <h3>التغذية السليمة</h3>
-                            <p>تناول الأطعمة الغنية بالكالسيوم وفيتامين د مثل الحليب والأسماك والخضروات</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <div class="content-card bg-white rounded-2xl p-8 shadow-medium border-l-4 border-primary hover-lift">
+                        <div class="w-16 h-16 rounded-xl medical-gradient flex items-center justify-center mb-6">
+                            <i class="fas fa-bone text-2xl text-white"></i>
                         </div>
+                        <h3 class="text-xl font-bold mb-4 text-gray-800" id="definition-title">التعريف</h3>
+                        <p class="text-gray-600 leading-relaxed" id="definition-text">
+                            مرض صامت يضعف العظام تدريجياً، مما يزيد من خطر الكسور حتى مع الصدمات البسيطة.
+                        </p>
                     </div>
                     
-                    <div class="card">
-                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=400&fit=crop" 
-                             alt="تمارين رياضية" 
-                             class="card-image">
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <i class="fas fa-running"></i>
-                            </div>
-                            <h3>التمارين الرياضية</h3>
-                            <p>ممارسة الرياضة بانتظام وخاصة تمارين حمل الأثقال والمقاومة</p>
+                    <div class="content-card bg-white rounded-2xl p-8 shadow-medium border-l-4 border-secondary hover-lift">
+                        <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-secondary to-secondary-light flex items-center justify-center mb-6">
+                            <i class="fas fa-chart-line text-2xl text-white"></i>
                         </div>
+                        <h3 class="text-xl font-bold mb-4 text-gray-800" id="mechanism-title">الآلية</h3>
+                        <p class="text-gray-600 leading-relaxed" id="mechanism-text">
+                            فقدان الكثافة العظمية يفوق معدل البناء، مما يؤدي إلى ضعف الهيكل العظمي الداخلي.
+                        </p>
                     </div>
                     
-                    <div class="card">
-                        <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&h=400&fit=crop" 
-                             alt="فحوصات منتظمة" 
-                             class="card-image">
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <i class="fas fa-stethoscope"></i>
-                            </div>
-                            <h3>الفحوصات المنتظمة</h3>
-                            <p>إجراء فحص كثافة العظام بانتظام خاصة بعد سن الخمسين</p>
+                    <div class="content-card bg-white rounded-2xl p-8 shadow-medium border-l-4 border-accent hover-lift">
+                        <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-accent to-accent-light flex items-center justify-center mb-6">
+                            <i class="fas fa-eye-slash text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 text-gray-800" id="silent-title">المرض الصامت</h3>
+                        <p class="text-gray-600 leading-relaxed" id="silent-text">
+                            لا تظهر أعراض واضحة حتى يحدث كسر، مما يجعل التشخيص المبكر ضرورياً.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="chart-container bg-white rounded-2xl p-8 shadow-medium mt-8">
+                    <h3 class="text-2xl font-bold mb-8 text-center text-primary" id="bone-structure-title">مقارنة بنية العظام</h3>
+                    <div class="h-96">
+                        <canvas id="boneComparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- الشريحة 3: الأعراض المبكرة -->
+        <div class="slide min-h-screen flex items-center bg-gradient-to-br from-blue-50 to-cyan-50" id="slide3">
+            <div class="max-w-6xl mx-auto px-6 py-12">
+                <h2 class="text-4xl font-bold text-center mb-12 text-primary" id="slide3-title">علامات الإنذار المبكر</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <div class="bg-white rounded-2xl p-8 shadow-medium hover-lift">
+                        <i class="fas fa-ruler-vertical text-4xl text-red-500 mb-6"></i>
+                        <h3 class="text-xl font-bold mb-4 text-gray-800" id="symptom1-title">فقدان الطول</h3>
+                        <p class="text-gray-600 leading-relaxed" id="symptom1-text">
+                            فقدان أكثر من 3 سم من الطول الإجمالي مع التقدم في العمر
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-8 shadow-medium hover-lift">
+                        <i class="fas fa-user text-4xl text-red-500 mb-6"></i>
+                        <h3 class="text-xl font-bold mb-4 text-gray-800" id="symptom2-title">انحناء القامة</h3>
+                        <p class="text-gray-600 leading-relaxed" id="symptom2-text">
+                            انحناء تدريجي في الجزء العلوي من الظهر (حدبة الأرملة)
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-8 shadow-medium hover-lift">
+                        <i class="fas fa-bone text-4xl text-red-500 mb-6"></i>
+                        <h3 class="text-xl font-bold mb-4 text-gray-800" id="symptom3-title">كسور سهلة</h3>
+                        <p class="text-gray-600 leading-relaxed" id="symptom3-text">
+                            كسور تحدث من سقوط من ارتفاع منخفض أو حتى بدون سبب واضح
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="accordion bg-white rounded-2xl shadow-medium overflow-hidden">
+                    <div class="accordion-header p-6 bg-blue-50 cursor-pointer flex justify-between items-center" onclick="toggleAccordion('more-symptoms')">
+                        <h4 class="text-lg font-bold text-primary" id="more-symptoms-title">علامات إضافية</h4>
+                        <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="p-6">
+                            <ul class="space-y-3 text-gray-600" id="additional-symptoms">
+                                <li class="flex items-center">
+                                    <i class="fas fa-circle text-xs text-primary ml-3"></i>
+                                    ألم في الظهر بسبب كسر في الفقرات
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-circle text-xs text-primary ml-3"></i>
+                                    ضعف قبضة اليد
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-circle text-xs text-primary ml-3"></i>
+                                    صعوبة في النهوض من الكرسي بدون استخدام اليدين
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-circle text-xs text-primary ml-3"></i>
+                                    تغيرات في وضعية المشي
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- صفحة فريق العمل -->
-    <div id="page-team" class="page">
-        <div class="page-content">
-            <div class="info-section">
-                <h2 id="team-title" style="color: #667eea; font-size: 36px; margin-bottom: 30px;">فريق العمل</h2>
+        <!-- الشريحة 4: عوامل الخطورة -->
+        <div class="slide min-h-screen flex items-center bg-gradient-to-br from-green-50 to-emerald-50" id="slide4">
+            <div class="max-w-6xl mx-auto px-6 py-12">
+                <h2 class="text-4xl font-bold text-center mb-12 text-primary" id="slide4-title">عوامل خطر هشاشة العظام</h2>
                 
-                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=500&fit=crop" 
-                     alt="فريق العمل" 
-                     class="real-image">
-                
-                <div class="team-grid">
-                    <div class="team-member">
-                        <div class="member-avatar">
-                            <i class="fas fa-user-md"></i>
-                        </div>
-                        <h3 id="supervisor-name">د. محمد العنزي</h3>
-                        <p id="supervisor-role">المشرف على المشروع</p>
-                        <p id="supervisor-desc">أستاذ مساعد في الطب الباطني</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-white rounded-2xl p-8 shadow-medium hover-lift">
+                        <h3 class="text-xl font-bold mb-6 text-primary" id="non-modifiable-title">عوامل غير قابلة للتغيير</h3>
+                        <ul class="space-y-4" id="non-modifiable-list">
+                            <li class="flex items-center p-3 bg-red-50 rounded-lg">
+                                <i class="fas fa-user-clock text-red-500 ml-3"></i>
+                                <span>التقدم في العمر</span>
+                            </li>
+                            <li class="flex items-center p-3 bg-red-50 rounded-lg">
+                                <i class="fas fa-venus text-red-500 ml-3"></i>
+                                <span>الجنس الأنثوي</span>
+                            </li>
+                            <li class="flex items-center p-3 bg-red-50 rounded-lg">
+                                <i class="fas fa-users text-red-500 ml-3"></i>
+                                <span>التاريخ العائلي</span>
+                            </li>
+                            <li class="flex items-center p-3 bg-red-50 rounded-lg">
+                                <i class="fas fa-globe-americas text-red-500 ml-3"></i>
+                                <span>الأصل العرقي</span>
+                            </li>
+                        </ul>
                     </div>
                     
-                    <div class="team-member">
-                        <div class="member-avatar">
-                            <i class="fas fa-user-graduate"></i>
-                        </div>
-                        <h3>تركي علي الجدعان</h3>
-                        <p>طالب مشارك في المشروع</p>
-                        <p>جامعة حفر الباطن</p>
-                    </div>
-                    
-                    <div class="team-member">
-                        <div class="member-avatar">
-                            <i class="fas fa-user-graduate"></i>
-                        </div>
-                        <h3>رائد خالد الغامدي</h3>
-                        <p>طالب مشارك في المشروع</p>
-                        <p>جامعة حفر الباطن</p>
-                    </div>
-                    
-                    <div class="team-member">
-                        <div class="member-avatar">
-                            <i class="fas fa-user-graduate"></i>
-                        </div>
-                        <h3>عبداللطيف ناصر الغامدي</h3>
-                        <p>طالب مشارك في المشروع</p>
-                        <p>جامعة حفر الباطن</p>
+                    <div class="bg-white rounded-2xl p-8 shadow-medium hover-lift">
+                        <h3 class="text-xl font-bold mb-6 text-secondary" id="modifiable-title">عوامل قابلة للتغيير</h3>
+                        <ul class="space-y-4" id="modifiable-list">
+                            <li class="flex items-center p-3 bg-green-50 rounded-lg">
+                                <i class="fas fa-utensils text-green-500 ml-3"></i>
+                                <span>نقص الكالسيوم</span>
+                            </li>
+                            <li class="flex items-center p-3 bg-green-50 rounded-lg">
+                                <i class="fas fa-sun text-green-500 ml-3"></i>
+                                <span>نقص فيتامين د</span>
+                            </li>
+                            <li class="flex items-center p-3 bg-green-50 rounded-lg">
+                                <i class="fas fa-running text-green-500 ml-3"></i>
+                                <span>قلة النشاط البدني</span>
+                            </li>
+                            <li class="flex items-center p-3 bg-green-50 rounded-lg">
+                                <i class="fas fa-smoking text-green-500 ml-3"></i>
+                                <span>التدخين والكحول</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 
-                <div style="text-align: center; margin-top: 50px; padding: 40px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 20px;">
-                    <h3 id="university-title">جامعة حفر الباطن</h3>
-                    <p id="university-dept">قسم التصميم الجذاب للويب</p>
-                    <p id="project-goal">مشروع توعوي لتعزيز الوعي الصحي حول مرض هشاشة العظام</p>
+                <div class="chart-container bg-white rounded-2xl p-8 shadow-medium">
+                    <h3 class="text-2xl font-bold mb-8 text-center text-primary" id="risk-pyramid-title">توزيع عوامل الخطورة</h3>
+                    <div class="h-96">
+                        <canvas id="riskFactorsChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- الشريحة 5: الإحصائيات -->
+        <div class="slide min-h-screen flex items-center bg-gradient-to-br from-purple-50 to-pink-50" id="slide5">
+            <div class="max-w-6xl mx-auto px-6 py-12 text-center">
+                <h2 class="text-4xl font-bold mb-12 text-primary" id="slide5-title">حقائق وأرقام عالمية</h2>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+                    <div class="bg-white rounded-2xl p-6 shadow-medium hover-lift">
+                        <i class="fas fa-venus text-4xl text-primary mb-4"></i>
+                        <div class="stat-number text-5xl font-bold text-primary mb-2" id="stat-women">33%</div>
+                        <p class="text-gray-600" id="stat-women-text">من النساء فوق 50 سنة</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 shadow-medium hover-lift">
+                        <i class="fas fa-bone text-4xl text-primary mb-4"></i>
+                        <div class="stat-number text-5xl font-bold text-primary mb-2" id="stat-fractures">8.9M</div>
+                        <p class="text-gray-600" id="stat-fractures-text">كسر سنوي بسبب الهشاشة</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 shadow-medium hover-lift">
+                        <i class="fas fa-clock text-4xl text-primary mb-4"></i>
+                        <div class="stat-number text-5xl font-bold text-primary mb-2" id="stat-frequency">3ث</div>
+                        <p class="text-gray-600" id="stat-frequency-text">كل 3 ثوانٍ يحدث كسر</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-6 shadow-medium hover-lift">
+                        <i class="fas fa-mars text-4xl text-primary mb-4"></i>
+                        <div class="stat-number text-5xl font-bold text-primary mb-2" id="stat-men">20%</div>
+                        <p class="text-gray-600" id="stat-men-text">من الرجال فوق 50 سنة</p>
+                    </div>
+                </div>
+                
+                <div class="chart-container bg-white rounded-2xl p-8 shadow-medium">
+                    <h3 class="text-2xl font-bold mb-8 text-primary" id="global-distribution-title">انتشار المرض حسب العمر والجنس</h3>
+                    <div class="h-96">
+                        <canvas id="statisticsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- الشريحة 6: حاسبة الخطورة -->
+        <div class="slide min-h-screen flex items-center bg-gradient-to-br from-amber-50 to-orange-50" id="slide6">
+            <div class="max-w-6xl mx-auto px-6 py-12">
+                <h2 class="text-4xl font-bold text-center mb-12 text-primary" id="slide6-title">حاسبة خطر هشاشة العظام</h2>
+                
+                <div class="calculator bg-white rounded-2xl p-8 shadow-hard border-2 border-primary max-w-2xl mx-auto">
+                    <h3 class="text-2xl font-bold mb-6 text-primary text-center">أدخل معلوماتك</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="input-group">
+                            <label class="block text-gray-700 mb-2 font-semibold" for="age">العمر (سنوات)</label>
+                            <input type="number" id="age" min="20" max="100" value="50" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="block text-gray-700 mb-2 font-semibold" for="gender">الجنس</label>
+                            <select id="gender" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300">
+                                <option value="female">أنثى</option>
+                                <option value="male">ذكر</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="block text-gray-700 mb-2 font-semibold" for="weight">الوزن (كجم)</label>
+                            <input type="number" id="weight" min="30" max="200" value="70" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="block text-gray-700 mb-2 font-semibold" for="height">الطول (سم)</label>
+                            <input type="number" id="height" min="100" max="250" value="170" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="input-group">
+                            <label class="block text-gray-700 mb-2 font-semibold" for="smoking">هل تدخن؟</label>
+                            <select id="smoking" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300">
+                                <option value="no">لا</option>
+                                <option value="yes">نعم</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="block text-gray-700 mb-2 font-semibold" for="family">تاريخ عائلي للمرض</label>
+                            <select id="family" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300">
+                                <option value="no">لا</option>
+                                <option value="yes">نعم</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button onclick="calculateRisk()" class="calc-btn w-full py-4 text-white font-bold text-lg rounded-xl mb-6">
+                        <i class="fas fa-calculator ml-2"></i>
+                        احسب مستوى الخطورة
+                    </button>
+                    
+                    <div id="riskResult" class="result-box bg-gradient-to-r from-gray-50 to-white rounded-xl p-6 border-l-4 border-green-500 hidden">
+                        <h4 class="text-xl font-bold mb-4 text-gray-800">نتيجة التقييم:</h4>
+                        <div id="riskLevel" class="risk-level text-xl font-bold mb-4 p-4 rounded-lg"></div>
+                        <p id="riskDescription" class="text-gray-600 mb-4"></p>
+                        <p id="riskRecommendations" class="text-gray-700 font-semibold"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- المزيد من الشرائح... -->
     </div>
 
     <!-- التذييل -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-logo">
-                <i class="fas fa-bone"></i>
+    <footer class="medical-gradient text-white py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">جامعة حفر الباطن</h3>
+                    <p class="text-white/80">مشروع توعوي حول مرض هشاشة العظام</p>
+                    <p class="text-white/80 mt-2">قسم التصميم الجذاب للويب</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">فريق العمل</h3>
+                    <p class="text-white/80">د. محمد العنزي (المشرف)</p>
+                    <p class="text-white/80">تركي الجدعان</p>
+                    <p class="text-white/80">رائد الغامدي</p>
+                    <p class="text-white/80">عبداللطيف الغامدي</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">اتصل بنا</h3>
+                    <p class="text-white/80">جامعة حفر الباطن</p>
+                    <p class="text-white/80">المملكة العربية السعودية</p>
+                </div>
             </div>
-            <h3 id="footer-title">مشروع التوعية بهشاشة العظام</h3>
-            <p id="footer-text">مبادرة تهدف إلى زيادة الوعي بمرض هشاشة العظام وأعراضه وطرق الوقاية منه</p>
             
-            <div class="footer-university">
-                <p id="footer-university">جامعة حفر الباطن - التصميم الجذاب للويب</p>
+            <div class="border-t border-white/20 pt-8 text-center">
+                <p class="text-white/60">© 2023 جامعة حفر الباطن. جميع الحقوق محفوظة.</p>
             </div>
-            
-            <p id="footer-team">إعداد: تركي الجدعان، رائد الغامدي، عبداللطيف الغامدي</p>
-            <p id="footer-supervisor">تحت إشراف: د. محمد العنزي</p>
-            <p id="footer-year">© 2023 جميع الحقوق محفوظة</p>
         </div>
     </footer>
 
     <script>
-        // بيانات اللغات
+        // بيانات الترجمة
         const translations = {
             ar: {
-                // العناوين الرئيسية
-                "site-title": "هشاشة العظام",
+                // العناوين
                 "university-name": "جامعة حفر الباطن",
-                "home-title": "هشاشة العظام: المرض الصامت",
-                "home-description": "هشاشة العظام هي حالة تضعف العظام وتجعلها هشة وأكثر عرضة للكسر. تعرف على أسبابها وأعراضها وطرق الوقاية منها.",
-                "about-title": "عن مرض هشاشة العظام",
-                "what-is-title": "ما هو مرض هشاشة العظام؟",
-                "what-is-text": "هشاشة العظام (Osteoporosis) هي حالة مرضية تضعف العظام وتجعلها هشة وأكثر عرضة للكسر. يحدث هذا المرض نتيجة فقدان العظام لكثافتها وللمكونات المعدنية فيها.",
-                "causes-title": "الأسباب الرئيسية",
-                "symptoms-title": "أعراض هشاشة العظام",
-                "diagnosis-title": "التشخيص",
-                "diagnosis-text": "يتم تشخيص هشاشة العظام عن طريق قياس كثافة العظام باستخدام جهاز DEXA. ينصح بإجراء الفحص للنساء فوق 65 سنة والرجال فوق 70 سنة.",
-                "prevention-title": "الوقاية والعلاج",
-                "team-title": "فريق العمل",
+                "department-name": "قسم التصميم الجذاب للويب",
+                "main-title": "هشاشة العظام المبكرة",
+                "main-subtitle": "التشخيص والوقاية في مرحلة مبكرة",
+                "cover-description": "عرض تفاعلي توعوي حول تشخيص ووقاية مرض هشاشة العظام في مراحله المبكرة",
                 "supervisor-name": "د. محمد العنزي",
-                "supervisor-role": "المشرف على المشروع",
-                "supervisor-desc": "أستاذ مساعد في الطب الباطني",
-                "university-title": "جامعة حفر الباطن",
-                "university-dept": "قسم التصميم الجذاب للويب",
-                "project-goal": "مشروع توعوي لتعزيز الوعي الصحي حول مرض هشاشة العظام",
-                "footer-title": "مشروع التوعية بهشاشة العظام",
-                "footer-text": "مبادرة تهدف إلى زيادة الوعي بمرض هشاشة العظام وأعراضه وطرق الوقاية منه",
-                "footer-university": "جامعة حفر الباطن - التصميم الجذاب للويب",
-                "footer-team": "إعداد: تركي الجدعان، رائد الغامدي، عبداللطيف الغامدي",
-                "footer-supervisor": "تحت إشراف: د. محمد العنزي",
-                "footer-year": "© 2023 جميع الحقوق محفوظة",
-                
-                // بطاقات الصفحة الرئيسية
-                "card1-title": "ما هي هشاشة العظام؟",
-                "card1-text": "مرض يصيب العظام ويؤدي إلى ضعفها وزيادة احتمالية كسرها نتيجة انخفاض كثافة العظام.",
-                "card2-title": "من يصاب بالمرض؟",
-                "card2-text": "يصيب النساء بعد سن اليأس بشكل خاص، لكنه قد يصيب الرجال أيضًا بسبب عوامل مختلفة.",
-                "card3-title": "كيفية الوقاية",
-                "card3-text": "الوقاية ممكنة من خلال التغذية السليمة والرياضة وتجنب التدخين.",
-                
-                // قائمة التنقل
-                "nav-home": "الرئيسية",
-                "nav-about": "عن المرض",
-                "nav-symptoms": "الأعراض",
-                "nav-prevention": "الوقاية",
-                "nav-team": "فريق العمل"
+                "supervisor-role": "المشرف الأكاديمي",
+                "student-role1": "طالب - قسم التصميم الجذاب للويب",
+                "student-role2": "طالب - قسم التصميم الجذاب للويب",
+                "student-role3": "طالب - قسم التصميم الجذاب للويب",
+                "supervision-text": "مشروع توعوي تحت إشراف قسم التصميم الجذاب للويب - جامعة حفر الباطن",
+                "slide2-title": "ما هي هشاشة العظام المبكرة؟",
+                "definition-title": "التعريف",
+                "definition-text": "مرض صامت يضعف العظام تدريجياً، مما يزيد من خطر الكسور حتى مع الصدمات البسيطة.",
+                "mechanism-title": "الآلية",
+                "mechanism-text": "فقدان الكثافة العظمية يفوق معدل البناء، مما يؤدي إلى ضعف الهيكل العظمي الداخلي.",
+                "silent-title": "المرض الصامت",
+                "silent-text": "لا تظهر أعراض واضحة حتى يحدث كسر، مما يجعل التشخيص المبكر ضرورياً.",
+                "bone-structure-title": "مقارنة بنية العظام",
+                "slide3-title": "علامات الإنذار المبكر",
+                "symptom1-title": "فقدان الطول",
+                "symptom1-text": "فقدان أكثر من 3 سم من الطول الإجمالي مع التقدم في العمر",
+                "symptom2-title": "انحناء القامة",
+                "symptom2-text": "انحناء تدريجي في الجزء العلوي من الظهر (حدبة الأرملة)",
+                "symptom3-title": "كسور سهلة",
+                "symptom3-text": "كسور تحدث من سقوط من ارتفاع منخفض أو حتى بدون سبب واضح",
+                "more-symptoms-title": "علامات إضافية",
+                "additional-symptoms": [
+                    "ألم في الظهر بسبب كسر في الفقرات",
+                    "ضعف قبضة اليد",
+                    "صعوبة في النهوض من الكرسي بدون استخدام اليدين",
+                    "تغيرات في وضعية المشي"
+                ],
+                "slide4-title": "عوامل خطر هشاشة العظام",
+                "non-modifiable-title": "عوامل غير قابلة للتغيير",
+                "non-modifiable-list": ["التقدم في العمر", "الجنس الأنثوي", "التاريخ العائلي", "الأصل العرقي"],
+                "modifiable-title": "عوامل قابلة للتغيير",
+                "modifiable-list": ["نقص الكالسيوم", "نقص فيتامين د", "قلة النشاط البدني", "التدخين والكحول"],
+                "risk-pyramid-title": "توزيع عوامل الخطورة",
+                "slide5-title": "حقائق وأرقام عالمية",
+                "stat-women": "33%",
+                "stat-women-text": "من النساء فوق 50 سنة",
+                "stat-fractures": "8.9M",
+                "stat-fractures-text": "كسر سنوي بسبب الهشاشة",
+                "stat-frequency": "3ث",
+                "stat-frequency-text": "كل 3 ثوانٍ يحدث كسر",
+                "stat-men": "20%",
+                "stat-men-text": "من الرجال فوق 50 سنة",
+                "global-distribution-title": "انتشار المرض حسب العمر والجنس",
+                "slide6-title": "حاسبة خطر هشاشة العظام"
             },
-            
             en: {
-                // Main titles
-                "site-title": "Osteoporosis",
+                // ترجمات باللغة الإنجليزية
                 "university-name": "University of Hafar Al-Batin",
-                "home-title": "Osteoporosis: The Silent Disease",
-                "home-description": "Osteoporosis is a condition that weakens bones, making them fragile and more likely to break. Learn about its causes, symptoms, and prevention methods.",
-                "about-title": "About Osteoporosis",
-                "what-is-title": "What is Osteoporosis?",
-                "what-is-text": "Osteoporosis is a medical condition that weakens bones, making them fragile and more prone to fractures. This disease occurs due to loss of bone density and mineral components.",
-                "causes-title": "Main Causes",
-                "symptoms-title": "Osteoporosis Symptoms",
-                "diagnosis-title": "Diagnosis",
-                "diagnosis-text": "Osteoporosis is diagnosed by measuring bone density using a DEXA device. Screening is recommended for women over 65 and men over 70.",
-                "prevention-title": "Prevention and Treatment",
-                "team-title": "Team Members",
-                "supervisor-name": "Dr. Mohammad Al-Enzi",
-                "supervisor-role": "Project Supervisor",
-                "supervisor-desc": "Assistant Professor of Internal Medicine",
-                "university-title": "University of Hafar Al-Batin",
-                "university-dept": "Attractive Web Design Department",
-                "project-goal": "Awareness project to promote health awareness about osteoporosis",
-                "footer-title": "Osteoporosis Awareness Project",
-                "footer-text": "An initiative aimed at increasing awareness of osteoporosis, its symptoms, and prevention methods",
-                "footer-university": "University of Hafar Al-Batin - Attractive Web Design",
-                "footer-team": "Prepared by: Turki Al-jadaan, Raed Al-Ghamdi, Abdulatif Al-Ghamdi",
-                "footer-supervisor": "Supervised by: Dr. Mohammad Al-Enzi",
-                "footer-year": "© 2023 All Rights Reserved",
-                
-                // Home page cards
-                "card1-title": "What is Osteoporosis?",
-                "card1-text": "A disease that affects bones and leads to weakness and increased risk of fracture due to decreased bone density.",
-                "card2-title": "Who Gets the Disease?",
-                "card2-text": "Primarily affects postmenopausal women, but can also affect men due to various factors.",
-                "card3-title": "How to Prevent",
-                "card3-text": "Prevention is possible through proper nutrition, exercise, and avoiding smoking.",
-                
-                // Navigation menu
-                "nav-home": "Home",
-                "nav-about": "About",
-                "nav-symptoms": "Symptoms",
-                "nav-prevention": "Prevention",
-                "nav-team": "Team"
+                "department-name": "Attractive Web Design Department",
+                "main-title": "Early Osteoporosis",
+                "main-subtitle": "Early Diagnosis and Prevention",
+                "cover-description": "An interactive awareness presentation about the diagnosis and prevention of osteoporosis in its early stages",
+                "supervisor-name": "Dr. Mohammed Al-Anzi",
+                "supervisor-role": "Academic Supervisor",
+                "student-role1": "Student - Attractive Web Design Department",
+                "student-role2": "Student - Attractive Web Design Department",
+                "student-role3": "Student - Attractive Web Design Department",
+                "supervision-text": "Awareness project supervised by the Attractive Web Design Department - University of Hafar Al-Batin",
+                "slide2-title": "What is Early Osteoporosis?",
+                "definition-title": "Definition",
+                "definition-text": "A silent disease that gradually weakens bones, increasing the risk of fractures even with minor trauma.",
+                "mechanism-title": "Mechanism",
+                "mechanism-text": "Bone density loss exceeds the rate of building, leading to weakening of the internal skeletal structure.",
+                "silent-title": "Silent Disease",
+                "silent-text": "No clear symptoms appear until a fracture occurs, making early diagnosis essential.",
+                "bone-structure-title": "Bone Structure Comparison",
+                "slide3-title": "Early Warning Signs",
+                "symptom1-title": "Height Loss",
+                "symptom1-text": "Loss of more than 3 cm of total height with aging",
+                "symptom2-title": "Stooped Posture",
+                "symptom2-text": "Gradual curvature in the upper back (Dowager's hump)",
+                "symptom3-title": "Easy Fractures",
+                "symptom3-text": "Fractures occurring from low-height falls or even without apparent cause",
+                "more-symptoms-title": "Additional Signs",
+                "additional-symptoms": [
+                    "Back pain due to vertebral fracture",
+                    "Weak hand grip",
+                    "Difficulty rising from a chair without using hands",
+                    "Changes in walking posture"
+                ],
+                "slide4-title": "Osteoporosis Risk Factors",
+                "non-modifiable-title": "Non-modifiable Factors",
+                "non-modifiable-list": ["Aging", "Female Gender", "Family History", "Ethnic Origin"],
+                "modifiable-title": "Modifiable Factors",
+                "modifiable-list": ["Calcium Deficiency", "Vitamin D Deficiency", "Lack of Physical Activity", "Smoking and Alcohol"],
+                "risk-pyramid-title": "Risk Factors Distribution",
+                "slide5-title": "Global Facts and Figures",
+                "stat-women": "33%",
+                "stat-women-text": "of women over 50 years",
+                "stat-fractures": "8.9M",
+                "stat-fractures-text": "annual fractures due to osteoporosis",
+                "stat-frequency": "3s",
+                "stat-frequency-text": "a fracture occurs every 3 seconds",
+                "stat-men": "20%",
+                "stat-men-text": "of men over 50 years",
+                "global-distribution-title": "Disease Spread by Age and Gender",
+                "slide6-title": "Osteoporosis Risk Calculator"
             }
         };
 
-        // الحالة الحالية للغة
+        // متغيرات حالة التطبيق
+        let currentSlide = 0;
+        let totalSlides = 6;
         let currentLang = 'ar';
-        let currentPage = 'home';
+        let charts = {};
 
-        // وظيفة إظهار صفحة مع حركات انتقال
-        function showPage(pageName) {
-            // إخفاء الصفحة الحالية مع حركة خروج
-            const currentPageElement = document.getElementById('page-' + currentPage);
-            if (currentPageElement) {
-                currentPageElement.classList.remove('active');
-                currentPageElement.classList.remove('page-transition');
-            }
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSlides();
+            updateSlideIndicator();
+            updateProgressBar();
+            createCharts();
+            setActiveLanguageButtons();
+        });
+
+        // إدارة الشرائح
+        function initializeSlides() {
+            const slides = document.querySelectorAll('.slide');
+            totalSlides = slides.length;
             
-            // إظهار الصفحة الجديدة مع حركة دخول
-            setTimeout(() => {
-                currentPage = pageName;
-                const newPageElement = document.getElementById('page-' + pageName);
-                if (newPageElement) {
-                    newPageElement.classList.add('active');
-                    newPageElement.classList.add('page-transition');
-                }
-                
-                // تحديث القائمة النشطة
-                document.querySelectorAll('.nav-link').forEach(link => {
-                    link.classList.remove('active');
-                });
-                document.getElementById('nav-' + pageName).classList.add('active');
-                
-                // التمرير لأعلى الصفحة
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 300);
+            // إنشاء نقاط الشرائح
+            const indicator = document.querySelector('.slide-indicator');
+            indicator.innerHTML = '';
+            
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = `dot ${i === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToSlide(i);
+                indicator.appendChild(dot);
+            }
         }
 
-        // وظيفة تغيير اللغة
+        function goToSlide(index) {
+            if (index < 0 || index >= totalSlides) return;
+            
+            currentSlide = index;
+            const container = document.getElementById('slide-container');
+            container.style.transform = `translateX(-${index * 100}vw)`;
+            
+            // تحديث النشاط
+            document.querySelectorAll('.slide').forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            
+            updateSlideIndicator();
+            updateProgressBar();
+            updateSlideCounter();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                goToSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                goToSlide(currentSlide - 1);
+            }
+        }
+
+        function updateSlideIndicator() {
+            document.querySelectorAll('.slide-indicator .dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress-bar').style.width = `${progress}%`;
+        }
+
+        function updateSlideCounter() {
+            document.getElementById('slide-counter').textContent = `${currentSlide + 1} / ${totalSlides}`;
+        }
+
+        // إدارة اللغة
         function changeLanguage(lang) {
             currentLang = lang;
             
             // تحديث أزرار اللغة
-            document.getElementById('lang-ar').classList.toggle('active', lang === 'ar');
-            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+            setActiveLanguageButtons();
             
-            // تحديث جميع النصوص
-            updateTexts(lang);
+            // تحديث النصوص
+            Object.keys(translations[lang]).forEach(key => {
+                const elements = document.querySelectorAll(`[id="${key}"]`);
+                elements.forEach(element => {
+                    const value = translations[lang][key];
+                    if (Array.isArray(value)) {
+                        if (element.tagName === 'UL') {
+                            element.innerHTML = '';
+                            value.forEach(item => {
+                                const li = document.createElement('li');
+                                li.textContent = item;
+                                element.appendChild(li);
+                            });
+                        }
+                    } else {
+                        element.textContent = value;
+                    }
+                });
+            });
             
             // تحديث اتجاه النص
             document.body.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.body.classList.toggle('font-cairo', lang === 'ar');
+            document.body.classList.toggle('font-inter', lang === 'en');
         }
 
-        // تحديث النصوص حسب اللغة
-        function updateTexts(lang) {
-            const data = translations[lang];
+        function setActiveLanguageButtons() {
+            document.querySelector('.lang-btn-ar').classList.toggle('bg-primary', currentLang === 'ar');
+            document.querySelector('.lang-btn-ar').classList.toggle('text-white', currentLang === 'ar');
+            document.querySelector('.lang-btn-ar').classList.toggle('text-gray-600', currentLang !== 'ar');
             
-            // تحديث جميع العناصر التي تحتوي على معرفات
-            for (const [key, value] of Object.entries(data)) {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = value;
-                }
+            document.querySelector('.lang-btn-en').classList.toggle('bg-primary', currentLang === 'en');
+            document.querySelector('.lang-btn-en').classList.toggle('text-white', currentLang === 'en');
+            document.querySelector('.lang-btn-en').classList.toggle('text-gray-600', currentLang !== 'en');
+        }
+
+        // الأقسام القابلة للطي
+        function toggleAccordion(id) {
+            const accordion = document.getElementById(id);
+            accordion.classList.toggle('active');
+            
+            const icon = accordion.querySelector('.fa-chevron-down');
+            if (icon) {
+                icon.style.transform = accordion.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
             }
         }
 
-        // تهيئة الموقع عند التحميل
-        document.addEventListener('DOMContentLoaded', function() {
-            // إضافة حركة لبطاقات الصفحة الرئيسية
-            const cards = document.querySelectorAll('.card');
-            cards.forEach((card, index) => {
-                card.style.animationDelay = `${index * 0.2}s`;
-                card.style.animation = 'cardEntrance 0.6s ease forwards';
-            });
+        // حاسبة الخطورة
+        function calculateRisk() {
+            const age = parseInt(document.getElementById('age').value) || 50;
+            const gender = document.getElementById('gender').value;
+            const weight = parseInt(document.getElementById('weight').value) || 70;
+            const height = parseInt(document.getElementById('height').value) || 170;
+            const smoking = document.getElementById('smoking').value;
+            const family = document.getElementById('family').value;
             
-            // تعريف حركة الدخول للبطاقات
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes cardEntrance {
-                    from {
-                        opacity: 0;
-                        transform: translateY(30px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-            `;
-            document.head.appendChild(style);
+            let score = 0;
             
-            // تهيئة اللغة العربية
-            changeLanguage('ar');
-        });
-
-        // إضافة حركات للمواقع عند التمرير
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-                navbar.style.boxShadow = '0 8px 30px rgba(0,0,0,0.15)';
+            // حساب النقاط
+            if (age < 50) score += 0;
+            else if (age < 60) score += 2;
+            else if (age < 70) score += 4;
+            else score += 6;
+            
+            if (gender === 'female') score += 3;
+            
+            const bmi = weight / ((height/100) ** 2);
+            if (bmi < 18.5) score += 3;
+            else if (bmi < 25) score += 1;
+            
+            if (smoking === 'yes') score += 2;
+            if (family === 'yes') score += 2;
+            
+            // عرض النتيجة
+            const resultBox = document.getElementById('riskResult');
+            const riskLevel = document.getElementById('riskLevel');
+            const riskDesc = document.getElementById('riskDescription');
+            const riskRec = document.getElementById('riskRecommendations');
+            
+            let level, description, recommendations, colorClass;
+            
+            if (score <= 4) {
+                level = currentLang === 'ar' ? 'خطورة منخفضة' : 'Low Risk';
+                description = currentLang === 'ar' 
+                    ? 'مستوى خطورة منخفض. استمر في اتباع نمط حياة صحي.' 
+                    : 'Low risk level. Continue maintaining a healthy lifestyle.';
+                recommendations = currentLang === 'ar'
+                    ? 'نصائح: حافظ على نظام غذائي غني بالكالسيوم ومارس الرياضة بانتظام.'
+                    : 'Tips: Maintain a calcium-rich diet and exercise regularly.';
+                colorClass = 'bg-green-100 text-green-800';
+            } else if (score <= 8) {
+                level = currentLang === 'ar' ? 'خطورة متوسطة' : 'Medium Risk';
+                description = currentLang === 'ar'
+                    ? 'مستوى خطورة متوسط. ننصح بفحص كثافة العظام.'
+                    : 'Medium risk level. We recommend a bone density test.';
+                recommendations = currentLang === 'ar'
+                    ? 'نصائح: قم بفحص كثافة العظام وتحدث مع طبيبك عن المكملات الغذائية.'
+                    : 'Tips: Get a bone density test and talk to your doctor about supplements.';
+                colorClass = 'bg-yellow-100 text-yellow-800';
             } else {
-                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+                level = currentLang === 'ar' ? 'خطورة عالية' : 'High Risk';
+                description = currentLang === 'ar'
+                    ? 'مستوى خطورة مرتفع. ننصح باستشارة طبيب مختص.'
+                    : 'High risk level. We recommend consulting a specialist doctor.';
+                recommendations = currentLang === 'ar'
+                    ? 'نصائح: استشر طبيباً مختصاً فوراً وافحص كثافة العظام.'
+                    : 'Tips: Consult a specialist doctor immediately and get a bone density test.';
+                colorClass = 'bg-red-100 text-red-800';
+            }
+            
+            riskLevel.textContent = level;
+            riskLevel.className = `risk-level ${colorClass} p-4 rounded-lg text-xl font-bold`;
+            riskDesc.textContent = description;
+            riskRec.textContent = recommendations;
+            
+            resultBox.classList.remove('hidden');
+            resultBox.classList.add('animate-fade-in');
+        }
+
+        // الرسوم البيانية
+        function createCharts() {
+            createBoneComparisonChart();
+            createRiskFactorsChart();
+            createStatisticsChart();
+        }
+
+        function createBoneComparisonChart() {
+            const ctx = document.getElementById('boneComparisonChart').getContext('2d');
+            charts.boneComparison = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: currentLang === 'ar' 
+                        ? ['الكثافة', 'المتانة', 'المرونة', 'مقاومة الكسر']
+                        : ['Density', 'Durability', 'Flexibility', 'Fracture Resistance'],
+                    datasets: [{
+                        label: currentLang === 'ar' ? 'عظام طبيعية' : 'Normal Bones',
+                        data: [90, 85, 80, 95],
+                        backgroundColor: 'rgba(26, 107, 140, 0.8)',
+                        borderColor: 'rgba(26, 107, 140, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: currentLang === 'ar' ? 'عظام هشة' : 'Osteoporotic Bones',
+                        data: [40, 35, 30, 25],
+                        backgroundColor: 'rgba(231, 76, 60, 0.8)',
+                        borderColor: 'rgba(231, 76, 60, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: currentLang === 'ar' ? 'النسبة (%)' : 'Percentage (%)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createRiskFactorsChart() {
+            const ctx = document.getElementById('riskFactorsChart').getContext('2d');
+            charts.riskFactors = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: currentLang === 'ar' 
+                        ? ['العمر المتقدم', 'الجنس الأنثوي', 'نقص الوزن', 'التدخين', 'التاريخ العائلي', 'قلة النشاط']
+                        : ['Advanced Age', 'Female Gender', 'Underweight', 'Smoking', 'Family History', 'Lack of Activity'],
+                    datasets: [{
+                        data: [30, 25, 15, 10, 10, 10],
+                        backgroundColor: [
+                            'rgba(26, 107, 140, 0.8)',
+                            'rgba(42, 157, 143, 0.8)',
+                            'rgba(233, 196, 106, 0.8)',
+                            'rgba(231, 76, 60, 0.8)',
+                            'rgba(155, 89, 182, 0.8)',
+                            'rgba(52, 152, 219, 0.8)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            rtl: currentLang === 'ar'
+                        }
+                    }
+                }
+            });
+        }
+
+        function createStatisticsChart() {
+            const ctx = document.getElementById('statisticsChart').getContext('2d');
+            charts.statistics = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['30-39', '40-49', '50-59', '60-69', '70+'],
+                    datasets: [{
+                        label: currentLang === 'ar' ? 'النساء' : 'Women',
+                        data: [5, 10, 25, 45, 65],
+                        borderColor: 'rgba(231, 76, 60, 1)',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }, {
+                        label: currentLang === 'ar' ? 'الرجال' : 'Men',
+                        data: [3, 7, 15, 25, 35],
+                        borderColor: 'rgba(52, 152, 219, 1)',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 70,
+                            title: {
+                                display: true,
+                                text: currentLang === 'ar' ? 'نسبة الإصابة (%)' : 'Infection Rate (%)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // التنقل باستخدام مفاتيح الأسهم
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') {
+                prevSlide();
+            } else if (e.key === 'ArrowLeft') {
+                nextSlide();
             }
         });
+
+        // التنقل باستخدام السحب على الأجهزة المحمولة
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const swipeDistance = touchEndX - touchStartX;
+            
+            if (Math.abs(swipeDistance) > swipeThreshold) {
+                if (swipeDistance > 0) {
+                    prevSlide();
+                } else {
+                    nextSlide();
+                }
+            }
+        }
     </script>
 </body>
 </html>
