@@ -33,9 +33,6 @@
                             DEFAULT: '#d4c9b8',
                             dark: '#b8a58c',
                         },
-                        sidebar: 'hsl(215 50% 25%)',
-                        'sidebar-foreground': 'hsl(200 20% 98%)',
-                        destructive: 'hsl(0 72% 55%)',
                     },
                     fontFamily: {
                         'tajawal': ['Tajawal', 'sans-serif'],
@@ -50,35 +47,13 @@
                     borderRadius: {
                         'xl': '15px',
                         '2xl': '20px',
+                        '3xl': '30px',
                     }
                 }
             }
         }
     </script>
     <style>
-        /* متغيرات CSS المخصصة */
-        :root {
-            --background: hsl(200 20% 98%);
-            --foreground: hsl(215 25% 15%);
-            --border: hsl(200 15% 90%);
-            --card: hsl(0 0% 100%);
-            --card-foreground: hsl(215 25% 15%);
-            --primary: hsl(215 70% 45%);
-            --primary-foreground: hsl(0 0% 100%);
-            --secondary: hsl(175 50% 42%);
-            --muted: hsl(200 15% 92%);
-            --muted-foreground: hsl(215 15% 45%);
-            --accent: hsl(175 45% 90%);
-            --accent-foreground: hsl(175 50% 25%);
-            --destructive: hsl(0 72% 55%);
-            --ring: hsl(215 70% 45%);
-            --chart-1: hsl(215 70% 45%);
-            --chart-2: hsl(175 60% 42%);
-            --chart-3: hsl(280 65% 55%);
-            --sidebar: hsl(215 50% 25%);
-            --sidebar-foreground: hsl(200 20% 98%);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -87,26 +62,46 @@
 
         body {
             font-family: 'Cairo', sans-serif;
-            background: var(--background);
-            color: var(--foreground);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* فصول Tailwind المخصصة */
+        .slide {
+            transition: transform 0.5s ease;
+        }
+
+        .slide-container {
+            transition: transform 0.5s ease;
+        }
+
+        .slide-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #94a3b8;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .slide-dot.active {
+            opacity: 1;
+            background: #1a6b8c;
+            transform: scale(1.2);
+        }
+
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+
         .glass-card {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .medical-gradient {
             background: linear-gradient(135deg, #1a6b8c 0%, #0f4a6e 100%);
-        }
-
-        .bone-gradient {
-            background: linear-gradient(135deg, #f0ede5 0%, #d4c9b8 100%);
         }
 
         .hover-lift {
@@ -115,40 +110,80 @@
 
         .hover-lift:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-hard);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
         }
 
-        /* شريط التنقل */
-        .navbar {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
         }
 
-        .slide-indicator .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--muted-foreground);
-            opacity: 0.3;
+        .accordion.active .accordion-content {
+            max-height: 500px;
+        }
+
+        .calc-btn {
+            background: linear-gradient(135deg, #1a6b8c 0%, #2a8db7 100%);
             transition: all 0.3s ease;
-            cursor: pointer;
         }
 
-        .slide-indicator .dot.active {
-            opacity: 1;
-            background: var(--primary);
-            transform: scale(1.2);
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(26, 107, 140, 0.3);
         }
 
-        /* الشريحة الأولى */
-        .hero-slide {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .image-gallery {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .image-gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .image-gallery img:hover {
+            transform: scale(1.03);
+        }
+
+        @media (max-width: 768px) {
+            .image-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .image-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .image-gallery {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .thank-you-slide {
+            background: linear-gradient(135deg, #1a6b8c 0%, #0f4a6e 100%);
             position: relative;
             overflow: hidden;
         }
 
-        .hero-slide::before {
+        .thank-you-slide::before {
             content: '';
             position: absolute;
             top: 0;
@@ -161,129 +196,55 @@
             opacity: 0.1;
         }
 
-        /* بطاقات الفريق */
-        .team-card {
+        .inspiration-card {
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
-        /* الأقسام القابلة للطي */
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .accordion.active .accordion-content {
-            max-height: 500px;
-        }
-
-        /* الرسوم البيانية */
-        .chart-container {
-            background: var(--card);
-            border: 1px solid var(--border);
-        }
-
-        /* إخفاء شريط التمرير */
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* زر الحساب */
-        .calc-btn {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            transition: all 0.3s ease;
-        }
-
-        .calc-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(26, 107, 140, 0.3);
-        }
-
-        /* تأثيرات متحركة */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-fade-in {
-            animation: fadeIn 0.5s ease forwards;
-        }
-
-        /* تصميم متجاوب */
-        @media (max-width: 768px) {
-            .slide-content {
-                padding: 2rem 1rem !important;
-            }
-            
-            .hero-title {
-                font-size: 2.5rem !important;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.25rem !important;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-title {
-                font-size: 2rem !important;
-            }
-            
-            .content-card {
-                padding: 1.5rem !important;
-            }
-        }
     </style>
 </head>
-<body dir="rtl" class="font-cairo">
+<body dir="rtl" class="font-cairo bg-gray-50">
     <!-- شريط التنقل -->
-    <nav class="navbar fixed top-0 left-0 right-0 z-50 px-6 py-4">
+    <nav class="navbar fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-4 space-x-reverse">
-                <a href="#slide1" onclick="goToSlide(0)" class="w-12 h-12 rounded-full bg-white shadow-soft border border-gray-100 flex items-center justify-center text-gray-700 hover:text-primary hover:border-primary transition-all duration-300 hover-lift">
+                <a href="#slide1" onclick="goToSlide(0)" class="w-12 h-12 rounded-full bg-white shadow-sm border border-gray-200 flex items-center justify-center text-gray-700 hover:text-primary hover:border-primary transition-all duration-300 hover:shadow-md">
                     <i class="fas fa-home text-lg"></i>
                 </a>
             </div>
             
-            <div class="slide-indicator flex items-center space-x-2 space-x-reverse">
-                <!-- سيتم إضافة النقاط ديناميكيًا -->
+            <div id="slide-indicator" class="flex items-center space-x-2 space-x-reverse">
+                <!-- ستتم إضافة النقاط ديناميكيًا -->
             </div>
             
             <div class="flex items-center space-x-4 space-x-reverse">
-                <span class="text-sm font-medium text-gray-600" id="slide-counter">1 / 10</span>
+                <span class="text-sm font-medium text-gray-600" id="slide-counter">1 / 11</span>
                 <div class="flex bg-gray-100 rounded-full p-1">
-                    <button onclick="changeLanguage('ar')" class="lang-btn-ar px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 bg-primary text-white">
+                    <button onclick="changeLanguage('ar')" id="lang-ar" class="lang-btn px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 bg-primary text-white">
                         العربية
                     </button>
-                    <button onclick="changeLanguage('en')" class="lang-btn-en px-4 py-1.5 rounded-full text-sm font-semibold text-gray-600 transition-all duration-300">
+                    <button onclick="changeLanguage('en')" id="lang-en" class="lang-btn px-4 py-1.5 rounded-full text-sm font-semibold text-gray-600 transition-all duration-300">
                         English
                     </button>
                 </div>
             </div>
         </div>
-        <div class="progress-bar absolute bottom-0 left-0 h-1 bg-gradient-to-r from-primary to-secondary transition-all duration-300" id="progress-bar"></div>
+        <div class="progress-bar absolute bottom-0 left-0 h-1 bg-gradient-to-r from-primary to-secondary" id="progress-bar" style="width: 9.09%"></div>
     </nav>
 
     <!-- أزرار التنقل الجانبية -->
-    <button onclick="prevSlide()" id="prev-btn" class="fixed left-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-white shadow-hard border border-gray-200 flex items-center justify-center text-gray-700 hover:text-primary hover:border-primary transition-all duration-300 hover-lift hidden md:flex">
+    <button onclick="prevSlide()" id="prev-btn" class="fixed left-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-white shadow-hard border border-gray-200 flex items-center justify-center text-gray-700 hover:text-primary hover:border-primary transition-all duration-300 hover:shadow-lg hidden md:flex">
         <i class="fas fa-chevron-left"></i>
     </button>
     
-    <button onclick="nextSlide()" id="next-btn" class="fixed right-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-white shadow-hard border border-gray-200 flex items-center justify-center text-gray-700 hover:text-primary hover:border-primary transition-all duration-300 hover-lift hidden md:flex">
+    <button onclick="nextSlide()" id="next-btn" class="fixed right-6 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-white shadow-hard border border-gray-200 flex items-center justify-center text-gray-700 hover:text-primary hover:border-primary transition-all duration-300 hover:shadow-lg hidden md:flex">
         <i class="fas fa-chevron-right"></i>
     </button>
 
     <!-- حاوية الشرائح -->
-    <div class="slide-container pt-20" id="slide-container">
+    <div class="slide-container pt-20" id="slide-container" style="width: 1100vw;">
         <!-- الشريحة 1: الغلاف -->
-        <div class="slide min-h-screen hero-slide" id="slide1">
+        <div class="slide min-h-screen w-screen flex items-center justify-center medical-gradient text-white relative overflow-hidden" id="slide1">
             <div class="absolute top-8 right-8 z-10 flex items-center space-x-4 space-x-reverse">
                 <div class="w-16 h-16 bg-white rounded-2xl shadow-hard flex items-center justify-center">
                     <i class="fas fa-university text-3xl text-primary"></i>
@@ -295,35 +256,35 @@
             </div>
             
             <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 text-center">
-                <h1 class="hero-title text-white font-tajawal font-bold text-6xl mb-6" id="main-title">
+                <h1 class="text-white font-tajawal font-bold text-5xl md:text-6xl mb-6" id="main-title">
                     هشاشة العظام المبكرة
-                    <div class="text-3xl mt-4 opacity-90" id="main-subtitle">التشخيص والوقاية في مرحلة مبكرة</div>
+                    <div class="text-2xl md:text-3xl mt-4 opacity-90" id="main-subtitle">التشخيص والوقاية في مرحلة مبكرة</div>
                 </h1>
                 
-                <p class="hero-subtitle text-white/90 text-2xl mb-12 max-w-3xl mx-auto" id="cover-description">
+                <p class="text-white/90 text-xl md:text-2xl mb-12 max-w-3xl mx-auto" id="cover-description">
                     عرض تفاعلي توعوي حول تشخيص ووقاية مرض هشاشة العظام في مراحله المبكرة
                 </p>
                 
-                <div class="team-grid grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-                    <div class="team-card rounded-2xl p-6 hover-lift">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+                    <div class="glass-card rounded-2xl p-6 hover-lift">
                         <i class="fas fa-user-md text-4xl text-white mb-4"></i>
                         <h3 class="text-white font-bold text-xl mb-2" id="supervisor-name">د. محمد العنزي</h3>
                         <p class="text-white/80" id="supervisor-role">المشرف الأكاديمي</p>
                     </div>
                     
-                    <div class="team-card rounded-2xl p-6 hover-lift">
+                    <div class="glass-card rounded-2xl p-6 hover-lift">
                         <i class="fas fa-user-graduate text-4xl text-white mb-4"></i>
                         <h3 class="text-white font-bold text-xl mb-2">تركي الجدعان</h3>
                         <p class="text-white/80" id="student-role1">طالب - قسم التصميم الجذاب للويب</p>
                     </div>
                     
-                    <div class="team-card rounded-2xl p-6 hover-lift">
+                    <div class="glass-card rounded-2xl p-6 hover-lift">
                         <i class="fas fa-user-graduate text-4xl text-white mb-4"></i>
                         <h3 class="text-white font-bold text-xl mb-2">رائد الغامدي</h3>
                         <p class="text-white/80" id="student-role2">طالب - قسم التصميم الجذاب للويب</p>
                     </div>
                     
-                    <div class="team-card rounded-2xl p-6 hover-lift">
+                    <div class="glass-card rounded-2xl p-6 hover-lift">
                         <i class="fas fa-user-graduate text-4xl text-white mb-4"></i>
                         <h3 class="text-white font-bold text-xl mb-2">عبداللطيف الغامدي</h3>
                         <p class="text-white/80" id="student-role3">طالب - قسم التصميم الجذاب للويب</p>
@@ -339,12 +300,12 @@
         </div>
 
         <!-- الشريحة 2: تعريف المرض -->
-        <div class="slide min-h-screen flex items-center bg-gradient-to-br from-gray-50 to-white" id="slide2">
+        <div class="slide min-h-screen w-screen flex items-center bg-gradient-to-br from-blue-50 to-cyan-50" id="slide2">
             <div class="max-w-6xl mx-auto px-6 py-12">
                 <h2 class="text-4xl font-bold text-center mb-12 text-primary" id="slide2-title">ما هي هشاشة العظام المبكرة؟</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                    <div class="content-card bg-white rounded-2xl p-8 shadow-medium border-l-4 border-primary hover-lift">
+                    <div class="bg-white rounded-2xl p-8 shadow-medium border-l-4 border-primary hover-lift">
                         <div class="w-16 h-16 rounded-xl medical-gradient flex items-center justify-center mb-6">
                             <i class="fas fa-bone text-2xl text-white"></i>
                         </div>
@@ -354,7 +315,7 @@
                         </p>
                     </div>
                     
-                    <div class="content-card bg-white rounded-2xl p-8 shadow-medium border-l-4 border-secondary hover-lift">
+                    <div class="bg-white rounded-2xl p-8 shadow-medium border-l-4 border-secondary hover-lift">
                         <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-secondary to-secondary-light flex items-center justify-center mb-6">
                             <i class="fas fa-chart-line text-2xl text-white"></i>
                         </div>
@@ -364,7 +325,7 @@
                         </p>
                     </div>
                     
-                    <div class="content-card bg-white rounded-2xl p-8 shadow-medium border-l-4 border-accent hover-lift">
+                    <div class="bg-white rounded-2xl p-8 shadow-medium border-l-4 border-accent hover-lift">
                         <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-accent to-accent-light flex items-center justify-center mb-6">
                             <i class="fas fa-eye-slash text-2xl text-white"></i>
                         </div>
@@ -375,8 +336,8 @@
                     </div>
                 </div>
                 
-                <div class="chart-container bg-white rounded-2xl p-8 shadow-medium mt-8">
-                    <h3 class="text-2xl font-bold mb-8 text-center text-primary" id="bone-structure-title">مقارنة بنية العظام</h3>
+                <div class="bg-white rounded-2xl p-8 shadow-medium">
+                    <h3 class="text-2xl font-bold mb-8 text-center text-primary" id="bone-structure-title">مقارنة بين العظام الطبيعية والعظام الهشة</h3>
                     <div class="h-96">
                         <canvas id="boneComparisonChart"></canvas>
                     </div>
@@ -385,7 +346,7 @@
         </div>
 
         <!-- الشريحة 3: الأعراض المبكرة -->
-        <div class="slide min-h-screen flex items-center bg-gradient-to-br from-blue-50 to-cyan-50" id="slide3">
+        <div class="slide min-h-screen w-screen flex items-center bg-gradient-to-br from-purple-50 to-pink-50" id="slide3">
             <div class="max-w-6xl mx-auto px-6 py-12">
                 <h2 class="text-4xl font-bold text-center mb-12 text-primary" id="slide3-title">علامات الإنذار المبكر</h2>
                 
@@ -415,7 +376,7 @@
                     </div>
                 </div>
                 
-                <div class="accordion bg-white rounded-2xl shadow-medium overflow-hidden">
+                <div class="bg-white rounded-2xl shadow-medium overflow-hidden">
                     <div class="accordion-header p-6 bg-blue-50 cursor-pointer flex justify-between items-center" onclick="toggleAccordion('more-symptoms')">
                         <h4 class="text-lg font-bold text-primary" id="more-symptoms-title">علامات إضافية</h4>
                         <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
@@ -447,7 +408,7 @@
         </div>
 
         <!-- الشريحة 4: عوامل الخطورة -->
-        <div class="slide min-h-screen flex items-center bg-gradient-to-br from-green-50 to-emerald-50" id="slide4">
+        <div class="slide min-h-screen w-screen flex items-center bg-gradient-to-br from-green-50 to-emerald-50" id="slide4">
             <div class="max-w-6xl mx-auto px-6 py-12">
                 <h2 class="text-4xl font-bold text-center mb-12 text-primary" id="slide4-title">عوامل خطر هشاشة العظام</h2>
                 
@@ -497,7 +458,7 @@
                     </div>
                 </div>
                 
-                <div class="chart-container bg-white rounded-2xl p-8 shadow-medium">
+                <div class="bg-white rounded-2xl p-8 shadow-medium">
                     <h3 class="text-2xl font-bold mb-8 text-center text-primary" id="risk-pyramid-title">توزيع عوامل الخطورة</h3>
                     <div class="h-96">
                         <canvas id="riskFactorsChart"></canvas>
@@ -506,10 +467,70 @@
             </div>
         </div>
 
-        <!-- الشريحة 5: الإحصائيات -->
-        <div class="slide min-h-screen flex items-center bg-gradient-to-br from-purple-50 to-pink-50" id="slide5">
+        <!-- الشريحة 5: معرض الصور العلمية -->
+        <div class="slide min-h-screen w-screen flex items-center bg-gradient-to-br from-amber-50 to-orange-50" id="slide5">
+            <div class="max-w-6xl mx-auto px-6 py-12">
+                <h2 class="text-4xl font-bold text-center mb-12 text-primary" id="slide5-title">معرض الصور العلمية</h2>
+                <p class="text-lg text-gray-600 text-center mb-8 max-w-3xl mx-auto" id="gallery-description">
+                    صور توضيحية تظهر الاختلاف بين العظام الطبيعية والعظام المصابة بهشاشة العظام
+                </p>
+                
+                <div class="image-gallery mb-8">
+                    <div>
+                        <img src="https://www.ncbi.nlm.nih.gov/sites/books/NBK45504/bin/ch2f2-5.jpg" 
+                             alt="هشاشة العظام" class="rounded-xl shadow-md">
+                        <p class="text-sm text-gray-500 mt-2 text-center">مقارنة بين العظام الطبيعية والمصابة</p>
+                    </div>
+                    
+                    <div>
+                        <img src="https://pub.mdpi-res.com/biomolecules/biomolecules-10-01534/article_deploy/html/images/biomolecules-10-01534-g001.png?1605064793" 
+                             alt="Osteoporosis" class="rounded-xl shadow-md">
+                        <p class="text-sm text-gray-500 mt-2 text-center">تشريح العظام المصابة</p>
+                    </div>
+                    
+                    <div>
+                        <img src="https://media.sciencephoto.com/c0/33/70/58/c0337058-800px-wm.jpg" 
+                             alt="Bone Osteoporosis" class="rounded-xl shadow-md">
+                        <p class="text-sm text-gray-500 mt-2 text-center">صورة مجهرية للعظام</p>
+                    </div>
+                    
+                    <div>
+                        <img src="https://meeting.handsurgery.org/abstracts/2017/images/AAHS1_1.jpg" 
+                             alt="Hand Osteoporosis" class="rounded-xl shadow-md">
+                        <p class="text-sm text-gray-500 mt-2 text-center">تأثير الهشاشة على اليد</p>
+                    </div>
+                    
+                    <div>
+                        <img src="https://scx2.b-cdn.net/gfx/news/2019/3dsimulation.jpg" 
+                             alt="3D Osteoporosis Bone" class="rounded-xl shadow-md">
+                        <p class="text-sm text-gray-500 mt-2 text-center">محاكاة ثلاثية الأبعاد</p>
+                    </div>
+                    
+                    <div>
+                        <img src="https://www.joionline.net/wp-content/uploads/2019/05/osteoporosis-e1643635860825-1200x900.jpg" 
+                             alt="Osteoporosis Photo" class="rounded-xl shadow-md">
+                        <p class="text-sm text-gray-500 mt-2 text-center">تصوير طبي للعظام</p>
+                    </div>
+                    
+                    <div>
+                        <img src="https://img.lovepik.com/bg/20240505/Illustrating-Osteoporosis-3D-Render-of-Porous-Bone-Tissue-with-Spongy_8837695_wh1200.jpg" 
+                             alt="3D Bone Porous" class="rounded-xl shadow-md">
+                        <p class="text-sm text-gray-500 mt-2 text-center">عظام مسامية ثلاثية الأبعاد</p>
+                    </div>
+                    
+                    <div>
+                        <img src="https://msfocus.org/getattachment/Magazine/Magazine-Items/Posted/Prevent-Osteoporosis-with-6-Bone-Health-Boosters/osteoporosis-cropped.jpg.aspx?height=371&width=700" 
+                             alt="Osteoporosis Info" class="rounded-xl shadow-md">
+                        <p class="text-sm text-gray-500 mt-2 text-center">معلومات توعوية</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- الشريحة 6: الإحصائيات -->
+        <div class="slide min-h-screen w-screen flex items-center bg-gradient-to-br from-blue-50 to-indigo-50" id="slide6">
             <div class="max-w-6xl mx-auto px-6 py-12 text-center">
-                <h2 class="text-4xl font-bold mb-12 text-primary" id="slide5-title">حقائق وأرقام عالمية</h2>
+                <h2 class="text-4xl font-bold mb-12 text-primary" id="slide6-title">حقائق وأرقام عالمية</h2>
                 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
                     <div class="bg-white rounded-2xl p-6 shadow-medium hover-lift">
@@ -537,7 +558,7 @@
                     </div>
                 </div>
                 
-                <div class="chart-container bg-white rounded-2xl p-8 shadow-medium">
+                <div class="bg-white rounded-2xl p-8 shadow-medium">
                     <h3 class="text-2xl font-bold mb-8 text-primary" id="global-distribution-title">انتشار المرض حسب العمر والجنس</h3>
                     <div class="h-96">
                         <canvas id="statisticsChart"></canvas>
@@ -546,12 +567,147 @@
             </div>
         </div>
 
-        <!-- الشريحة 6: حاسبة الخطورة -->
-        <div class="slide min-h-screen flex items-center bg-gradient-to-br from-amber-50 to-orange-50" id="slide6">
+        <!-- الشريحة 7: الوقاية -->
+        <div class="slide min-h-screen w-screen flex items-center bg-gradient-to-br from-teal-50 to-cyan-50" id="slide7">
             <div class="max-w-6xl mx-auto px-6 py-12">
-                <h2 class="text-4xl font-bold text-center mb-12 text-primary" id="slide6-title">حاسبة خطر هشاشة العظام</h2>
+                <h2 class="text-4xl font-bold text-center mb-12 text-primary" id="prevention-title">الوقاية من هشاشة العظام</h2>
                 
-                <div class="calculator bg-white rounded-2xl p-8 shadow-hard border-2 border-primary max-w-2xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <div class="bg-white rounded-2xl p-8 shadow-medium hover-lift">
+                        <div class="w-16 h-16 rounded-xl medical-gradient flex items-center justify-center mb-6">
+                            <i class="fas fa-apple-alt text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">التغذية السليمة</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 ml-2"></i>
+                                الكالسيوم (1000-1200 مجم يومياً)
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 ml-2"></i>
+                                فيتامين د (800-1000 وحدة دولية)
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 ml-2"></i>
+                                البروتينات والمغنيسيوم
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-8 shadow-medium hover-lift">
+                        <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-secondary to-secondary-light flex items-center justify-center mb-6">
+                            <i class="fas fa-running text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">التمارين الرياضية</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 ml-2"></i>
+                                تمارين حمل الأثقال
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 ml-2"></i>
+                                تمارين المقاومة
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 ml-2"></i>
+                                المشي والسباحة
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-8 shadow-medium hover-lift">
+                        <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-accent to-accent-light flex items-center justify-center mb-6">
+                            <i class="fas fa-heartbeat text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">نمط الحياة الصحي</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 ml-2"></i>
+                                تجنب التدخين
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 ml-2"></i>
+                                الحد من الكحول
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fas fa-check text-green-500 ml-2"></i>
+                                الحفاظ على الوزن الصحي
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- الشريحة 8: التشخيص -->
+        <div class="slide min-h-screen w-screen flex items-center bg-gradient-to-br from-violet-50 to-purple-50" id="slide8">
+            <div class="max-w-6xl mx-auto px-6 py-12">
+                <h2 class="text-4xl font-bold text-center mb-12 text-primary" id="diagnosis-title">التشخيص المبكر</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="bg-white rounded-2xl p-8 shadow-medium hover-lift">
+                        <h3 class="text-xl font-bold mb-6 text-primary">طرق التشخيص</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-stethoscope text-primary mt-1 ml-3"></i>
+                                <div>
+                                    <span class="font-semibold">فحص DXA:</span>
+                                    <p class="text-gray-600 text-sm">قياس كثافة العظام بالأشعة السينية</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-x-ray text-primary mt-1 ml-3"></i>
+                                <div>
+                                    <span class="font-semibold">الأشعة المقطعية:</span>
+                                    <p class="text-gray-600 text-sm">تصوير ثلاثي الأبعاد للعظام</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-flask text-primary mt-1 ml-3"></i>
+                                <div>
+                                    <span class="font-semibold">الفحوصات المخبرية:</span>
+                                    <p class="text-gray-600 text-sm">تحاليل الدم للكالسيوم وفيتامين د</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-8 shadow-medium hover-lift">
+                        <h3 class="text-xl font-bold mb-6 text-primary">فئات الفحص الموصى بها</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-center p-3 bg-blue-50 rounded-lg">
+                                <i class="fas fa-female text-blue-500 ml-3"></i>
+                                <div>
+                                    <span class="font-semibold">النساء فوق 65 سنة</span>
+                                    <p class="text-gray-600 text-sm">فحص سنوي دوري</p>
+                                </div>
+                            </li>
+                            <li class="flex items-center p-3 bg-blue-50 rounded-lg">
+                                <i class="fas fa-male text-blue-500 ml-3"></i>
+                                <div>
+                                    <span class="font-semibold">الرجال فوق 70 سنة</span>
+                                    <p class="text-gray-600 text-sm">فحص سنوي دوري</p>
+                                </div>
+                            </li>
+                            <li class="flex items-center p-3 bg-blue-50 rounded-lg">
+                                <i class="fas fa-exclamation-triangle text-blue-500 ml-3"></i>
+                                <div>
+                                    <span class="font-semibold">من لديهم عوامل خطورة</span>
+                                    <p class="text-gray-600 text-sm">فحص مبكر بغض النظر عن العمر</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- الشريحة 9: حاسبة الخطورة -->
+        <div class="slide min-h-screen w-screen flex items-center bg-gradient-to-br from-amber-50 to-orange-50" id="slide9">
+            <div class="max-w-6xl mx-auto px-6 py-12">
+                <h2 class="text-4xl font-bold text-center mb-12 text-primary" id="calculator-title">حاسبة خطر هشاشة العظام</h2>
+                
+                <div class="bg-white rounded-3xl p-8 shadow-hard border-2 border-primary max-w-2xl mx-auto">
                     <h3 class="text-2xl font-bold mb-6 text-primary text-center">أدخل معلوماتك</h3>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -602,7 +758,7 @@
                         احسب مستوى الخطورة
                     </button>
                     
-                    <div id="riskResult" class="result-box bg-gradient-to-r from-gray-50 to-white rounded-xl p-6 border-l-4 border-green-500 hidden">
+                    <div id="riskResult" class="result-box bg-gradient-to-r from-gray-50 to-white rounded-xl p-6 border-l-4 border-green-500 hidden animate-fade-in">
                         <h4 class="text-xl font-bold mb-4 text-gray-800">نتيجة التقييم:</h4>
                         <div id="riskLevel" class="risk-level text-xl font-bold mb-4 p-4 rounded-lg"></div>
                         <p id="riskDescription" class="text-gray-600 mb-4"></p>
@@ -612,45 +768,146 @@
             </div>
         </div>
 
-        <!-- المزيد من الشرائح... -->
-    </div>
-
-    <!-- التذييل -->
-    <footer class="medical-gradient text-white py-12">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                <div>
-                    <h3 class="text-xl font-bold mb-4">جامعة حفر الباطن</h3>
-                    <p class="text-white/80">مشروع توعوي حول مرض هشاشة العظام</p>
-                    <p class="text-white/80 mt-2">قسم التصميم الجذاب للويب</p>
-                </div>
+        <!-- الشريحة 10: العلاج -->
+        <div class="slide min-h-screen w-screen flex items-center bg-gradient-to-br from-rose-50 to-pink-50" id="slide10">
+            <div class="max-w-6xl mx-auto px-6 py-12">
+                <h2 class="text-4xl font-bold text-center mb-12 text-primary" id="treatment-title">علاج هشاشة العظام</h2>
                 
-                <div>
-                    <h3 class="text-xl font-bold mb-4">فريق العمل</h3>
-                    <p class="text-white/80">د. محمد العنزي (المشرف)</p>
-                    <p class="text-white/80">تركي الجدعان</p>
-                    <p class="text-white/80">رائد الغامدي</p>
-                    <p class="text-white/80">عبداللطيف الغامدي</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <div class="bg-white rounded-2xl p-8 shadow-medium hover-lift">
+                        <h3 class="text-xl font-bold mb-6 text-primary">الأدوية</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-center p-3 bg-purple-50 rounded-lg">
+                                <i class="fas fa-pills text-purple-500 ml-3"></i>
+                                <span>البايفوسفونيت</span>
+                            </li>
+                            <li class="flex items-center p-3 bg-purple-50 rounded-lg">
+                                <i class="fas fa-syringe text-purple-500 ml-3"></i>
+                                <span>دينوسوماب</span>
+                            </li>
+                            <li class="flex items-center p-3 bg-purple-50 rounded-lg">
+                                <i class="fas fa-prescription-bottle text-purple-500 ml-3"></i>
+                                <span>تيريباراتايد</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-8 shadow-medium hover-lift">
+                        <h3 class="text-xl font-bold mb-6 text-primary">المكملات الغذائية</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-center p-3 bg-green-50 rounded-lg">
+                                <i class="fas fa-capsules text-green-500 ml-3"></i>
+                                <span>الكالسيوم</span>
+                            </li>
+                            <li class="flex items-center p-3 bg-green-50 rounded-lg">
+                                <i class="fas fa-sun text-green-500 ml-3"></i>
+                                <span>فيتامين د</span>
+                            </li>
+                            <li class="flex items-center p-3 bg-green-50 rounded-lg">
+                                <i class="fas fa-atom text-green-500 ml-3"></i>
+                                <span>المغنيسيوم</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-8 shadow-medium hover-lift">
+                        <h3 class="text-xl font-bold mb-6 text-primary">العلاج الطبيعي</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-center p-3 bg-blue-50 rounded-lg">
+                                <i class="fas fa-balance-scale text-blue-500 ml-3"></i>
+                                <span>تمارين التوازن</span>
+                            </li>
+                            <li class="flex items-center p-3 bg-blue-50 rounded-lg">
+                                <i class="fas fa-dumbbell text-blue-500 ml-3"></i>
+                                <span>تقوية العضلات</span>
+                            </li>
+                            <li class="flex items-center p-3 bg-blue-50 rounded-lg">
+                                <i class="fas fa-shield-alt text-blue-500 ml-3"></i>
+                                <span>الوقاية من السقوط</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                
-                <div>
-                    <h3 class="text-xl font-bold mb-4">اتصل بنا</h3>
-                    <p class="text-white/80">جامعة حفر الباطن</p>
-                    <p class="text-white/80">المملكة العربية السعودية</p>
-                </div>
-            </div>
-            
-            <div class="border-t border-white/20 pt-8 text-center">
-                <p class="text-white/60">© 2023 جامعة حفر الباطن. جميع الحقوق محفوظة.</p>
             </div>
         </div>
-    </footer>
+
+        <!-- الشريحة 11: الشكر والتقدير -->
+        <div class="slide min-h-screen w-screen flex items-center justify-center thank-you-slide text-white" id="slide11">
+            <div class="max-w-4xl mx-auto px-6 py-12 text-center relative z-10">
+                <div class="inspiration-card rounded-3xl p-12 max-w-2xl mx-auto">
+                    <div class="mb-8">
+                        <i class="fas fa-heart text-6xl text-white/80 mb-6"></i>
+                        <h1 class="text-5xl font-bold mb-4" id="thank-you-title">شكراً وتقدير</h1>
+                        <div class="w-32 h-1 bg-white/50 mx-auto mb-8"></div>
+                    </div>
+                    
+                    <div class="mb-10">
+                        <div class="flex justify-center mb-8">
+                            <div class="w-32 h-32 bg-white/20 rounded-full flex items-center justify-center border-4 border-white/30">
+                                <i class="fas fa-user-md text-5xl text-white"></i>
+                            </div>
+                        </div>
+                        
+                        <h2 class="text-3xl font-bold mb-4" id="doctor-name">الدكتور محمد العنزي</h2>
+                        <p class="text-xl text-white/90 mb-6" id="doctor-title">المشرف الأكاديمي</p>
+                        
+                        <div class="bg-white/10 rounded-2xl p-8 mb-8 text-right">
+                            <i class="fas fa-quote-right text-3xl text-white/50 mb-4 block"></i>
+                            <p class="text-xl leading-relaxed mb-4" id="inspiration-text">
+                                الملهم والفكرة الأولى في إعداد هذا المشروع<br>
+                                الذي يهدف إلى توعية المجتمع بمرض هشاشة العظام المبكرة
+                            </p>
+                            <p class="text-lg text-white/80" id="gratitude-text">
+                                كل الشكر والتقدير لجهوده القيمة وتوجيهاته السديدة
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-12 pt-8 border-t border-white/20">
+                        <p class="text-lg" id="final-thanks">
+                            تَسِيَّة مَرْزِيَّون<br>
+                            لكل من ساهم في إنجاز هذا العمل
+                        </p>
+                        
+                        <div class="mt-8 flex justify-center space-x-6 space-x-reverse">
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <i class="fas fa-user-graduate text-2xl text-white"></i>
+                                </div>
+                                <p class="text-white/90">تركي الجدعان</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <i class="fas fa-user-graduate text-2xl text-white"></i>
+                                </div>
+                                <p class="text-white/90">رائد الغامدي</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <i class="fas fa-user-graduate text-2xl text-white"></i>
+                                </div>
+                                <p class="text-white/90">عبداللطيف الغامدي</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-10">
+                            <p class="text-white/80 text-lg">
+                                قسم التصميم الجذاب للويب<br>
+                                جامعة حفر الباطن
+                            </p>
+                            <p class="text-white/60 text-sm mt-4">© 2023 جميع الحقوق محفوظة</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         // بيانات الترجمة
         const translations = {
             ar: {
-                // العناوين
+                // العناوين الرئيسية
                 "university-name": "جامعة حفر الباطن",
                 "department-name": "قسم التصميم الجذاب للويب",
                 "main-title": "هشاشة العظام المبكرة",
@@ -662,6 +919,8 @@
                 "student-role2": "طالب - قسم التصميم الجذاب للويب",
                 "student-role3": "طالب - قسم التصميم الجذاب للويب",
                 "supervision-text": "مشروع توعوي تحت إشراف قسم التصميم الجذاب للويب - جامعة حفر الباطن",
+                
+                // الشريحة 2
                 "slide2-title": "ما هي هشاشة العظام المبكرة؟",
                 "definition-title": "التعريف",
                 "definition-text": "مرض صامت يضعف العظام تدريجياً، مما يزيد من خطر الكسور حتى مع الصدمات البسيطة.",
@@ -669,7 +928,9 @@
                 "mechanism-text": "فقدان الكثافة العظمية يفوق معدل البناء، مما يؤدي إلى ضعف الهيكل العظمي الداخلي.",
                 "silent-title": "المرض الصامت",
                 "silent-text": "لا تظهر أعراض واضحة حتى يحدث كسر، مما يجعل التشخيص المبكر ضرورياً.",
-                "bone-structure-title": "مقارنة بنية العظام",
+                "bone-structure-title": "مقارنة بين العظام الطبيعية والعظام الهشة",
+                
+                // الشريحة 3
                 "slide3-title": "علامات الإنذار المبكر",
                 "symptom1-title": "فقدان الطول",
                 "symptom1-text": "فقدان أكثر من 3 سم من الطول الإجمالي مع التقدم في العمر",
@@ -684,13 +945,21 @@
                     "صعوبة في النهوض من الكرسي بدون استخدام اليدين",
                     "تغيرات في وضعية المشي"
                 ],
+                
+                // الشريحة 4
                 "slide4-title": "عوامل خطر هشاشة العظام",
                 "non-modifiable-title": "عوامل غير قابلة للتغيير",
                 "non-modifiable-list": ["التقدم في العمر", "الجنس الأنثوي", "التاريخ العائلي", "الأصل العرقي"],
                 "modifiable-title": "عوامل قابلة للتغيير",
                 "modifiable-list": ["نقص الكالسيوم", "نقص فيتامين د", "قلة النشاط البدني", "التدخين والكحول"],
                 "risk-pyramid-title": "توزيع عوامل الخطورة",
-                "slide5-title": "حقائق وأرقام عالمية",
+                
+                // الشريحة 5
+                "slide5-title": "معرض الصور العلمية",
+                "gallery-description": "صور توضيحية تظهر الاختلاف بين العظام الطبيعية والعظام المصابة بهشاشة العظام",
+                
+                // الشريحة 6
+                "slide6-title": "حقائق وأرقام عالمية",
                 "stat-women": "33%",
                 "stat-women-text": "من النساء فوق 50 سنة",
                 "stat-fractures": "8.9M",
@@ -700,10 +969,29 @@
                 "stat-men": "20%",
                 "stat-men-text": "من الرجال فوق 50 سنة",
                 "global-distribution-title": "انتشار المرض حسب العمر والجنس",
-                "slide6-title": "حاسبة خطر هشاشة العظام"
+                
+                // الشريحة 7
+                "prevention-title": "الوقاية من هشاشة العظام",
+                
+                // الشريحة 8
+                "diagnosis-title": "التشخيص المبكر",
+                
+                // الشريحة 9
+                "calculator-title": "حاسبة خطر هشاشة العظام",
+                
+                // الشريحة 10
+                "treatment-title": "علاج هشاشة العظام",
+                
+                // الشريحة 11
+                "thank-you-title": "شكراً وتقدير",
+                "doctor-name": "الدكتور محمد العنزي",
+                "doctor-title": "المشرف الأكاديمي",
+                "inspiration-text": "الملهم والفكرة الأولى في إعداد هذا المشروع<br>الذي يهدف إلى توعية المجتمع بمرض هشاشة العظام المبكرة",
+                "gratitude-text": "كل الشكر والتقدير لجهوده القيمة وتوجيهاته السديدة",
+                "final-thanks": "تَسِيَّة مَرْزِيَّون<br>لكل من ساهم في إنجاز هذا العمل"
             },
             en: {
-                // ترجمات باللغة الإنجليزية
+                // English translations...
                 "university-name": "University of Hafar Al-Batin",
                 "department-name": "Attractive Web Design Department",
                 "main-title": "Early Osteoporosis",
@@ -722,7 +1010,7 @@
                 "mechanism-text": "Bone density loss exceeds the rate of building, leading to weakening of the internal skeletal structure.",
                 "silent-title": "Silent Disease",
                 "silent-text": "No clear symptoms appear until a fracture occurs, making early diagnosis essential.",
-                "bone-structure-title": "Bone Structure Comparison",
+                "bone-structure-title": "Comparison between Normal and Osteoporotic Bones",
                 "slide3-title": "Early Warning Signs",
                 "symptom1-title": "Height Loss",
                 "symptom1-text": "Loss of more than 3 cm of total height with aging",
@@ -743,7 +1031,9 @@
                 "modifiable-title": "Modifiable Factors",
                 "modifiable-list": ["Calcium Deficiency", "Vitamin D Deficiency", "Lack of Physical Activity", "Smoking and Alcohol"],
                 "risk-pyramid-title": "Risk Factors Distribution",
-                "slide5-title": "Global Facts and Figures",
+                "slide5-title": "Scientific Image Gallery",
+                "gallery-description": "Illustrative images showing the difference between normal bones and osteoporotic bones",
+                "slide6-title": "Global Facts and Figures",
                 "stat-women": "33%",
                 "stat-women-text": "of women over 50 years",
                 "stat-fractures": "8.9M",
@@ -753,22 +1043,32 @@
                 "stat-men": "20%",
                 "stat-men-text": "of men over 50 years",
                 "global-distribution-title": "Disease Spread by Age and Gender",
-                "slide6-title": "Osteoporosis Risk Calculator"
+                "prevention-title": "Osteoporosis Prevention",
+                "diagnosis-title": "Early Diagnosis",
+                "calculator-title": "Osteoporosis Risk Calculator",
+                "treatment-title": "Osteoporosis Treatment",
+                "thank-you-title": "Thanks and Appreciation",
+                "doctor-name": "Dr. Mohammed Al-Anzi",
+                "doctor-title": "Academic Supervisor",
+                "inspiration-text": "The inspiration and first idea in preparing this project<br>which aims to raise community awareness about early osteoporosis",
+                "gratitude-text": "All thanks and appreciation for his valuable efforts and wise guidance",
+                "final-thanks": "Heartfelt thanks<br>to everyone who contributed to the completion of this work"
             }
         };
 
         // متغيرات حالة التطبيق
         let currentSlide = 0;
-        let totalSlides = 6;
+        let totalSlides = 11;
         let currentLang = 'ar';
         let charts = {};
 
         // تهيئة التطبيق
         document.addEventListener('DOMContentLoaded', function() {
             initializeSlides();
+            createCharts();
             updateSlideIndicator();
             updateProgressBar();
-            createCharts();
+            updateSlideCounter();
             setActiveLanguageButtons();
         });
 
@@ -778,12 +1078,12 @@
             totalSlides = slides.length;
             
             // إنشاء نقاط الشرائح
-            const indicator = document.querySelector('.slide-indicator');
+            const indicator = document.getElementById('slide-indicator');
             indicator.innerHTML = '';
             
             for (let i = 0; i < totalSlides; i++) {
                 const dot = document.createElement('div');
-                dot.className = `dot ${i === 0 ? 'active' : ''}`;
+                dot.className = `slide-dot ${i === 0 ? 'active' : ''}`;
                 dot.onclick = () => goToSlide(i);
                 indicator.appendChild(dot);
             }
@@ -797,11 +1097,10 @@
             container.style.transform = `translateX(-${index * 100}vw)`;
             
             // تحديث النشاط
-            document.querySelectorAll('.slide').forEach((slide, i) => {
-                slide.classList.toggle('active', i === index);
+            document.querySelectorAll('.slide-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
             });
             
-            updateSlideIndicator();
             updateProgressBar();
             updateSlideCounter();
         }
@@ -819,7 +1118,7 @@
         }
 
         function updateSlideIndicator() {
-            document.querySelectorAll('.slide-indicator .dot').forEach((dot, i) => {
+            document.querySelectorAll('.slide-dot').forEach((dot, i) => {
                 dot.classList.toggle('active', i === currentSlide);
             });
         }
@@ -855,7 +1154,7 @@
                             });
                         }
                     } else {
-                        element.textContent = value;
+                        element.innerHTML = value; // استخدام innerHTML للسماح بـ <br>
                     }
                 });
             });
@@ -867,20 +1166,24 @@
         }
 
         function setActiveLanguageButtons() {
-            document.querySelector('.lang-btn-ar').classList.toggle('bg-primary', currentLang === 'ar');
-            document.querySelector('.lang-btn-ar').classList.toggle('text-white', currentLang === 'ar');
-            document.querySelector('.lang-btn-ar').classList.toggle('text-gray-600', currentLang !== 'ar');
+            const arBtn = document.getElementById('lang-ar');
+            const enBtn = document.getElementById('lang-en');
             
-            document.querySelector('.lang-btn-en').classList.toggle('bg-primary', currentLang === 'en');
-            document.querySelector('.lang-btn-en').classList.toggle('text-white', currentLang === 'en');
-            document.querySelector('.lang-btn-en').classList.toggle('text-gray-600', currentLang !== 'en');
+            if (currentLang === 'ar') {
+                arBtn.className = 'lang-btn px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 bg-primary text-white';
+                enBtn.className = 'lang-btn px-4 py-1.5 rounded-full text-sm font-semibold text-gray-600 transition-all duration-300';
+            } else {
+                arBtn.className = 'lang-btn px-4 py-1.5 rounded-full text-sm font-semibold text-gray-600 transition-all duration-300';
+                enBtn.className = 'lang-btn px-4 py-1.5 rounded-full text-sm font-semibold transition-all duration-300 bg-primary text-white';
+            }
         }
 
         // الأقسام القابلة للطي
         function toggleAccordion(id) {
             const accordion = document.getElementById(id);
-            accordion.classList.toggle('active');
+            if (!accordion) return;
             
+            accordion.classList.toggle('active');
             const icon = accordion.querySelector('.fa-chevron-down');
             if (icon) {
                 icon.style.transform = accordion.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
@@ -1020,97 +1323,4 @@
                             'rgba(42, 157, 143, 0.8)',
                             'rgba(233, 196, 106, 0.8)',
                             'rgba(231, 76, 60, 0.8)',
-                            'rgba(155, 89, 182, 0.8)',
-                            'rgba(52, 152, 219, 0.8)'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            rtl: currentLang === 'ar'
-                        }
-                    }
-                }
-            });
-        }
-
-        function createStatisticsChart() {
-            const ctx = document.getElementById('statisticsChart').getContext('2d');
-            charts.statistics = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['30-39', '40-49', '50-59', '60-69', '70+'],
-                    datasets: [{
-                        label: currentLang === 'ar' ? 'النساء' : 'Women',
-                        data: [5, 10, 25, 45, 65],
-                        borderColor: 'rgba(231, 76, 60, 1)',
-                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                        fill: true,
-                        tension: 0.3
-                    }, {
-                        label: currentLang === 'ar' ? 'الرجال' : 'Men',
-                        data: [3, 7, 15, 25, 35],
-                        borderColor: 'rgba(52, 152, 219, 1)',
-                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                        fill: true,
-                        tension: 0.3
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 70,
-                            title: {
-                                display: true,
-                                text: currentLang === 'ar' ? 'نسبة الإصابة (%)' : 'Infection Rate (%)'
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // التنقل باستخدام مفاتيح الأسهم
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowRight') {
-                prevSlide();
-            } else if (e.key === 'ArrowLeft') {
-                nextSlide();
-            }
-        });
-
-        // التنقل باستخدام السحب على الأجهزة المحمولة
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        document.addEventListener('touchstart', function(e) {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        document.addEventListener('touchend', function(e) {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            const swipeDistance = touchEndX - touchStartX;
-            
-            if (Math.abs(swipeDistance) > swipeThreshold) {
-                if (swipeDistance > 0) {
-                    prevSlide();
-                } else {
-                    nextSlide();
-                }
-            }
-        }
-    </script>
-</body>
-</html>
+                            '
