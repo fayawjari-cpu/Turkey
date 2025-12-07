@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
+<he ad>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>هشاشة العظام المبكرة - Early Osteoporosis</title>
@@ -1308,3 +1308,926 @@
                             <div class="input-group">
                                 <label class="block text-gray-700 mb-2 font-bold" for="calc-gender">الجنس</label>
                                 <select id="calc-gender" class="w-full p-3 border border-g
+                                    </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="input-group">
+                                <label class="block text-gray-700 mb-2 font-bold" for="calc-weight">الوزن (كجم)</label>
+                                <input type="number" id="calc-weight" min="30" max="200" value="70" class="w-full p-3 border border-gray-300 rounded-lg">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="block text-gray-700 mb-2 font-bold" for="calc-height">الطول (سم)</label>
+                                <input type="number" id="calc-height" min="100" max="250" value="170" class="w-full p-3 border border-gray-300 rounded-lg">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="block text-gray-700 mb-2 font-bold" id="calc-smoking-label">هل تدخن؟</label>
+                            <div class="flex space-x-4 space-x-reverse">
+                                <label class="flex items-center">
+                                    <input type="radio" name="smoking" value="yes" class="ml-2">
+                                    <span id="calc-smoking-yes">نعم</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="smoking" value="no" checked class="ml-2">
+                                    <span id="calc-smoking-no">لا</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="block text-gray-700 mb-2 font-bold" id="calc-family-label">هل يوجد تاريخ عائلي للمرض؟</label>
+                            <div class="flex space-x-4 space-x-reverse">
+                                <label class="flex items-center">
+                                    <input type="radio" name="family" value="yes" class="ml-2">
+                                    <span id="calc-family-yes">نعم</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="family" value="no" checked class="ml-2">
+                                    <span id="calc-family-no">لا</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="block text-gray-700 mb-2 font-bold" id="calc-activity-label">مستوى النشاط البدني</label>
+                            <select id="calc-activity" class="w-full p-3 border border-gray-300 rounded-lg">
+                                <option value="low" id="calc-activity-low">منخفض (لا تمارين)</option>
+                                <option value="moderate" id="calc-activity-moderate">متوسط (تمارين خفيفة)</option>
+                                <option value="high" id="calc-activity-high">مرتفع (تمارين منتظمة)</option>
+                            </select>
+                        </div>
+                        
+                        <button onclick="calculateRisk()" class="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg hover:bg-primaryDark transition flex items-center justify-center shadow-lg">
+                            <i class="fas fa-calculator ml-2"></i>
+                            <span id="calc-btn">احسب مستوى الخطورة</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <div id="calc-result" class="bg-white/20 backdrop-blur-sm rounded-2xl p-8 text-white" style="display: none;">
+                        <h3 class="text-2xl font-bold mb-6" id="result-title">نتيجة التقييم:</h3>
+                        
+                        <div class="mb-8">
+                            <div class="flex items-center justify-between mb-4">
+                                <span id="risk-level-label">مستوى الخطورة:</span>
+                                <span id="risk-level" class="text-2xl font-bold"></span>
+                            </div>
+                            
+                            <div class="w-full bg-white/30 h-6 rounded-full overflow-hidden mb-2">
+                                <div id="risk-bar" class="h-full rounded-full transition-all duration-1000"></div>
+                            </div>
+                            
+                            <div class="flex justify-between text-sm">
+                                <span id="risk-low">منخفض</span>
+                                <span id="risk-moderate">متوسط</span>
+                                <span id="risk-high">مرتفع</span>
+                            </div>
+                        </div>
+                        
+                        <div id="risk-description" class="mb-6 p-4 bg-white/10 rounded-xl"></div>
+                        
+                        <div>
+                            <h4 class="text-xl font-bold mb-4" id="recommendations-title">التوصيات:</h4>
+                            <ul id="recommendations-list" class="space-y-3"></ul>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-white rounded-2xl p-6">
+                        <h4 class="text-xl font-bold text-gray-800 mb-4" id="calc-info-title">معلومات عن الحاسبة</h4>
+                        <p class="text-gray-600" id="calc-info-desc">
+                            هذه الحاسبة تستند إلى نموذج FRAX المعدل لتقييم خطر الإصابة بهشاشة العظام. النتائج هي لأغراض توعوية فقط ولا تغني عن استشارة الطبيب.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- الصفحة 11: الشكر -->
+    <section id="page-11" class="page" style="background: linear-gradient(135deg, #1a6b8c 0%, #0f4a6e 100%);">
+        <div class="container mx-auto h-full flex flex-col justify-center">
+            <div class="bg-white/10 backdrop-blur-sm rounded-3xl p-12 max-w-5xl mx-auto border border-white/20">
+                <div class="text-center text-white mb-12">
+                    <h1 class="text-5xl font-bold mb-8" id="thanks-title">شكر وتقدير</h1>
+                    <div class="w-32 h-1 bg-white/50 mx-auto mb-12"></div>
+                </div>
+                
+                <div class="flex flex-col lg:flex-row items-center mb-16">
+                    <div class="lg:ml-12 mb-8 lg:mb-0">
+                        <div class="w-48 h-48 bg-gradient-to-r from-white to-blue-100 rounded-full flex items-center justify-center mx-auto shadow-2xl">
+                            <i class="fas fa-user-md text-7xl text-primary"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center lg:text-right flex-1">
+                        <h2 class="text-4xl font-bold mb-6" id="supervisor-thanks-name">المشرف: الدكتور محمد العنزي</h2>
+                        <p class="text-2xl opacity-90 mb-8" id="supervisor-thanks-role">المشرف الأكاديمي والملهم الرئيسي للمشروع</p>
+                        
+                        <div class="bg-white/20 rounded-2xl p-8 mb-8">
+                            <p class="text-2xl leading-relaxed mb-6" id="thanks-message-1">
+                                كل الشكر والتقدير لجهوده القيمة وتوجيهاته السديدة التي كانت الدافع الأساسي لإنجاز هذا المشروع التوعوي المهم.
+                            </p>
+                            <p class="text-xl opacity-90" id="thanks-message-2">
+                                كان خير مرشد ومعلم، وقد أثرى العمل بأفكاره الثرية وخبرته الواسعة في مجال صحة العظام.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                    <div class="bg-white/10 rounded-2xl p-6 text-center">
+                        <i class="fas fa-lightbulb text-4xl mb-6"></i>
+                        <h3 class="text-xl font-bold mb-4" id="thanks-quality1">الإلهام</h3>
+                        <p class="opacity-90" id="thanks-quality1-desc">الفكرة الأولى والمحرك الرئيسي</p>
+                    </div>
+                    
+                    <div class="bg-white/10 rounded-2xl p-6 text-center">
+                        <i class="fas fa-graduation-cap text-4xl mb-6"></i>
+                        <h3 class="text-xl font-bold mb-4" id="thanks-quality2">التوجيه</h3>
+                        <p class="opacity-90" id="thanks-quality2-desc">الإشراف العلمي الدقيق</p>
+                    </div>
+                    
+                    <div class="bg-white/10 rounded-2xl p-6 text-center">
+                        <i class="fas fa-hands-helping text-4xl mb-6"></i>
+                        <h3 class="text-xl font-bold mb-4" id="thanks-quality3">الدعم</h3>
+                        <p class="opacity-90" id="thanks-quality3-desc">المساندة المستمرة طوال المشروع</p>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col md:flex-row items-center justify-between">
+                    <div class="flex items-center mb-6 md:mb-0">
+                        <img src="https://upload.wikimedia.org/wikipedia/ar/4/47/%D8%B4%D8%B9%D8%A7%D8%B1_%D8%AC%D8%A7%D9%85%D8%B9%D8%A9_%D8%AD%D9%81%D8%B1%D8%A7%D9%84%D8%A8%D8%A7%D8%B7%D9%86.png" 
+                             alt="شعار جامعة حفر الباطن" 
+                             class="h-20 w-auto ml-4">
+                        <div class="text-right">
+                            <h3 class="text-xl font-bold text-white">جامعة حفر الباطن</h3>
+                            <p class="opacity-90">كلية العلوم الطبية التطبيقية</p>
+                            <p class="opacity-90">قسم التمريض</p>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p class="text-2xl mb-6" id="final-thanks">تَسِيَّة مَرْزِيَّون</p>
+                        <p class="text-xl opacity-90" id="project-year">مشروع تخرج 2023</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- زر العودة للأعلى -->
+    <button class="floating-btn" onclick="goToPage(0)">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- مؤشر الصفحات -->
+    <div class="page-indicator">
+        <div class="page-dot active" onclick="goToPage(0)"></div>
+        <div class="page-dot" onclick="goToPage(1)"></div>
+        <div class="page-dot" onclick="goToPage(2)"></div>
+        <div class="page-dot" onclick="goToPage(3)"></div>
+        <div class="page-dot" onclick="goToPage(4)"></div>
+        <div class="page-dot" onclick="goToPage(5)"></div>
+        <div class="page-dot" onclick="goToPage(6)"></div>
+        <div class="page-dot" onclick="goToPage(7)"></div>
+        <div class="page-dot" onclick="goToPage(8)"></div>
+        <div class="page-dot" onclick="goToPage(9)"></div>
+        <div class="page-dot" onclick="goToPage(10)"></div>
+    </div>
+
+    <script>
+        // حالات اللغة
+        let isEnglish = false;
+        const arabicContent = {
+            // العناوين
+            'site-title': 'جامعة حفر الباطن',
+            'site-subtitle': 'كلية العلوم الطبية التطبيقية - قسم التمريض',
+            'lang-text': 'English',
+            
+            // القائمة
+            'nav-home': 'الرئيسية',
+            'nav-about': 'تعريف المرض',
+            'nav-causes': 'أسباب المرض',
+            'nav-symptoms': 'الأعراض',
+            'nav-comparison': 'المقارنة',
+            'nav-diagnosis': 'التشخيص',
+            'nav-treatment': 'العلاج',
+            'nav-prevention': 'الوقاية',
+            'nav-statistics': 'الإحصائيات',
+            'nav-calculator': 'الحاسبة',
+            'nav-thanks': 'الشكر',
+            
+            // الصفحة 1
+            'hero-title': 'هشاشة العظام المبكرة',
+            'hero-subtitle': 'الكشف المبكر... الوقاية الدائمة',
+            'hero-description': 'مشروع توعوي متكامل عن هشاشة العظام المبكرة، يهدف إلى رفع الوعي الصحي وتقديم المعلومات العلمية الدقيقة للوقاية والكشف المبكر',
+            'team-title': 'فريق العمل',
+            'student1-name': 'تركي الجدعان',
+            'student2-name': 'رائد الغامدي',
+            'student3-name': 'عبداللطيف الغامدي',
+            'supervisor-name': 'المشرف: د. محمد العنزي',
+            'supervisor-role': 'مشرف المشروع والملهم الرئيسي للفكرة',
+            'start-btn': 'ابدأ الرحلة المعرفية',
+            
+            // الصفحة 2
+            'about-title': 'تعريف هشاشة العظام المبكرة',
+            'definition-title': 'ما هي هشاشة العظام؟',
+            'definition-desc': 'هشاشة العظام هي مرض صامت يتسم بانخفاض كثافة العظام وتدهور نسيجها الدقيق، مما يؤدي إلى زيادة هشاشتها وارتفاع خطر التعرض للكسور. في الحالة الطبيعية، يتم تجديد العظام باستمرار، ولكن مع تقدم العمر أو بسبب عوامل أخرى، يختل التوازن بين عملية الهدم والبناء، مما يؤدي إلى ضعف العظام.',
+            'important-note': 'يُعرف هشاشة العظام بـ "اللص الصامت" لأنه يسرق قوة العظام دون أعراض واضحة حتى يحدث كسر!',
+            'image1-title': 'العظام المصابة بهشاشة العظام',
+            'image1-desc': 'ملاحظة المسافات الكبيرة بين شبكة العظام الداخلية',
+            'stat1-title': 'النساء',
+            'stat1-desc': 'الأكثر عرضة للإصابة',
+            'stat2-title': 'بعد الـ 50',
+            'stat2-desc': 'تزداد الخطورة بعد هذا العمر',
+            'feature1-title': 'فقدان الكثافة',
+            'feature1-desc': 'فقدان تدريجي لكثافة المعادن في العظام',
+            'feature2-title': 'تغير الهيكل',
+            'feature2-desc': 'تغير في البنية المجهرية للعظام',
+            'feature3-title': 'زيادة الهشاشة',
+            'feature3-desc': 'ارتفاع خطر الكسور حتى مع الصدمات البسيطة',
+            
+            // الصفحة 3
+            'causes-title': 'أسباب وعوامل خطر هشاشة العظام',
+            'main-causes-title': 'الأسباب الرئيسية',
+            'cause1-title': 'نقص هرمون الإستروجين',
+            'cause1-desc': 'خاصة بعد انقطاع الطمث لدى النساء، حيث يسرع من فقدان العظام',
+            'cause2-title': 'بعض الأدوية',
+            'cause2-desc': 'مثل الكورتيكوستيرويدات المستخدمة لفترات طويلة',
+            'cause3-title': 'العوامل الوراثية',
+            'cause3-desc': 'تاريخ عائلي للإصابة بهشاشة العظام أو كسور الورك',
+            'risk-factors-title': 'عوامل الخطر الأخرى',
+            'risk1': 'التدخين',
+            'risk2': 'الكحول',
+            'risk3': 'قلة النشاط',
+            'risk4': 'سوء التغذية',
+            'image2-title': 'عوامل متعددة تسبب هشاشة العظام',
+            'image2-desc': 'التدخين، الكحول، قلة النشاط، سوء التغذية',
+            'prevention-tip-title': 'نصيحة وقائية',
+            'prevention-tip-desc': 'يمكن الوقاية من 50% من حالات هشاشة العظام من خلال التغذية السليمة والتمارين المنتظمة وتجنب عوامل الخطر.',
+            'prevention-tip-btn': 'تعرف على طرق الوقاية',
+            
+            // الصفحة 4
+            'symptoms-title': 'أعراض هشاشة العظام',
+            'symptoms-desc-title': 'مرض صامت بدون أعراض مبكرة واضحة',
+            'symptoms-desc': 'غالباً لا تظهر أعراض لهشاشة العظام في مراحلها المبكرة، ولهذا يُطلق عليه "اللص الصامت". تبدأ الأعراض بالظهور بعد أن يصل المرض إلى مراحل متقدمة وتحدث الكسور.',
+            'symptom1-title': 'فقدان الطول',
+            'symptom1-desc': 'فقدان أكثر من 3 سم من الطول الإجمالي مع التقدم في العمر',
+            'symptom2-title': 'انحناء القامة',
+            'symptom2-desc': 'انحناء تدريجي في الجزء العلوي من الظهر (حدبة الأرملة)',
+            'symptom3-title': 'كسور سهلة',
+            'symptom3-desc': 'كسور تحدث من سقوط من ارتفاع منخفض أو حتى بدون سبب واضح',
+            'symptom4-title': 'آلام الظهر',
+            'symptom4-desc': 'آلام مزمنة في أسفل الظهر نتيجة كسور انضغاطية في الفقرات',
+            'warning-title': 'تحذير مهم',
+            'warning-desc': 'عند الشعور بأي من هذه الأعراض، خاصة بعد سن الـ 50 أو بعد انقطاع الطمث، يجب مراجعة الطبيب لإجراء فحص كثافة العظام.',
+            
+            // الصفحة 5
+            'comparison-title': 'مقارنة بين العظام الطبيعية والعظام المصابة',
+            'healthy-title': 'العظام الطبيعية',
+            'healthy1': 'كثافة عالية ومتماسكة',
+            'healthy2': 'مسافات صغيرة بين شبكة العظام',
+            'healthy3': 'قوة تحمل عالية للضغط',
+            'osteoporosis-title': 'العظام المصابة',
+            'osteoporosis1': 'كثافة منخفضة وهشة',
+            'osteoporosis2': 'مسافات كبيرة بين شبكة العظام',
+            'osteoporosis3': 'ضعف تحمل الضغط وسهولة الكسر',
+            'comparison-stat1': 'انخفاض في الكثافة العظمية في الحالات المتقدمة',
+            'comparison-stat2': 'زيادة في خطر الكسور مقارنة بالعظام الطبيعية',
+            'comparison-stat3': 'من كسور الفقرات لا تسبب ألم واضح في البداية',
+            
+            // الصفحة 6
+            'diagnosis-title': 'طرق تشخيص هشاشة العظام',
+            'dexa-title': 'فحص DEXA (المعيار الذهبي)',
+            'dexa-desc': 'فحص امتصاص الأشعة السينية المزدوجة الطاقة (DEXA) هو الطريقة الأكثر دقة لتشخيص هشاشة العظام. يقيس كثافة المعادن في العظام في الورك والعمود الفقري.',
+            't-score-title': 'تفسير نتائج T-score:',
+            't-score1': 'T-score ≥ -1: طبيعي',
+            't-score2': 'T-score بين -1 و -2.5: قلة العظم',
+            't-score3': 'T-score ≤ -2.5: هشاشة العظام',
+            'other-tests-title': 'فحوصات أخرى',
+            'test1': 'فحوصات الدم',
+            'test1-desc': 'قياس الكالسيوم، فيتامين د، وغيرها',
+            'test2': 'الأشعة العادية',
+            'test2-desc': 'لكشف الكسور الانضغاطية',
+            'test3': 'الفحص الجيني',
+            'test3-desc': 'لتقييم الاستعداد الوراثي',
+            'test4': 'التقييم السريري',
+            'test4-desc': 'فحص الطبيب والتاريخ المرضي',
+            'diagnosis-image-title': 'جهاز فحص DEXA',
+            'diagnosis-image-desc': 'الجهاز الأكثر دقة لقياس كثافة العظام',
+            'when-to-test-title': 'متى يجب إجراء الفحص؟',
+            'when1': 'جميع النساء فوق 65 سنة',
+            'when2': 'النساء فوق 50 سنة مع عوامل خطر',
+            'when3': 'الرجال فوق 70 سنة',
+            'when4': 'أي شخص تعرض لكسر بعد سن الـ 50',
+            'test-btn': 'احسب خطر إصابتك',
+            
+            // الصفحة 7
+            'treatment-title': 'علاج هشاشة العظام',
+            'treatment-approach-title': 'نهج العلاج المتكامل',
+            'treatment-approach-desc': 'يعتمد علاج هشاشة العظام على نهج متعدد الجوانب يشمل الأدوية، التغذية، التمارين الرياضية، وتعديل نمط الحياة. الهدف الرئيسي هو منع فقدان المزيد من العظام وتقليل خطر الكسور.',
+            'medication-title': 'الأدوية',
+            'medication1': '• البايفوسفونيت (مثل أليندرونيت)',
+            'medication2': '• دينوسوماب (بروليا)',
+            'medication3': '• تيريباراتايد (فورتيو)',
+            'medication4': '• العلاج الهرموني البديل',
+            'nutrition-title': 'المكملات الغذائية',
+            'nutrition1': '• الكالسيوم (1000-1200 مجم يومياً)',
+            'nutrition2': '• فيتامين د (800-1000 وحدة دولية)',
+            'nutrition3': '• المغنيسيوم والزنك',
+            'nutrition4': '• فيتامين ك',
+            'exercise-title': 'التمارين الرياضية',
+            'exercise1': '• تمارين حمل الأثقال',
+            'exercise2': '• تمارين المقاومة',
+            'exercise3': '• تمارين التوازن',
+            'exercise4': '• تمارين المرونة',
+            'doctor-advice-title': 'نصيحة طبية مهمة',
+            'doctor-advice-desc': 'يجب أن يتم اختيار العلاج المناسب لكل مريض بناءً على حالته الصحية، عمره، عوامل الخطر، ونتائج فحص كثافة العظام. استشر طبيبك قبل البدء بأي علاج.',
+            
+            // الصفحة 8
+            'prevention-title': 'الوقاية من هشاشة العظام',
+            'prevention-strategy-title': 'استراتيجيات الوقاية',
+            'strategy1-title': 'التغذية المتوازنة',
+            'strategy1-desc': 'الحرص على تناول الكالسيوم وفيتامين د بكميات كافية منذ الصغر',
+            'strategy2-title': 'النشاط البدني المنتظم',
+            'strategy2-desc': 'ممارسة الرياضة بانتظام خاصة تمارين حمل الأثقال',
+            'strategy3-title': 'تجنب العوامل الضارة',
+            'strategy3-desc': 'الإقلاع عن التدخين والحد من تناول الكحول',
+            'prevention-tips-title': 'نصائح وقائية يومية',
+            'tip1': 'التعرض للشمس',
+            'tip1-desc': '15 دقيقة يومياً لإنتاج فيتامين د',
+            'tip2': 'الوزن الصحي',
+            'tip2-desc': 'الحفاظ على وزن مناسب',
+            'tip3': 'النوم الكافي',
+            'tip3-desc': '7-8 ساعات نوم ليلاً',
+            'tip4': 'الفحص الدوري',
+            'tip4-desc': 'فحص كثافة العظام حسب التوصيات',
+            'prevention-image-title': 'تمارين الوقاية',
+            'prevention-image-desc': 'التمارين المنتظمة تبني عظاماً أقوى',
+            'prevention-fact-title': 'حقيقة علمية',
+            'prevention-fact-desc': 'بناء العظام القوية في مرحلة الشباب (حتى 30 سنة) هو أفضل استثمار للوقاية من هشاشة العظام في الكبر. فالعظام تصل إلى ذروة كثافتها في العقد الثالث من العمر.',
+            'prevention-quote': 'الوقاية خير من العلاج',
+            
+            // الصفحة 9
+            'statistics-title': 'إحصائيات هشاشة العظام',
+            'global-statistics-title': 'إحصائيات عالمية',
+            'global-stat1-title': 'الانتشار بين النساء:',
+            'global-stat1-desc': 'واحدة من كل 3 نساء فوق 50 سنة تصاب بهشاشة العظام',
+            'global-stat2-title': 'الانتشار بين الرجال:',
+            'global-stat2-desc': 'واحد من كل 5 رجال فوق 50 سنة يصاب بهشاشة العظام',
+            'global-stat3-title': 'الكسور السنوية:',
+            'global-stat3-desc': '8.9 مليون كسر سنوياً بسبب هشاشة العظام حول العالم',
+            'saudi-statistics-title': 'إحصائيات محلية (السعودية)',
+            'saudi-stat1-label': 'نقص فيتامين د:',
+            'saudi-stat2-label': 'نقص الكالسيوم:',
+            'saudi-stat3-label': 'قلة النشاط البدني:',
+            'saudi-stat4-label': 'التشخيص المتأخر:',
+            'chart-title': 'مقارنة معدلات الإصابة حسب العمر والجنس',
+            'ratio1': 'امرأة من كل 3 نساء فوق 50 سنة',
+            'ratio2': 'رجل من كل 5 رجال فوق 50 سنة',
+            'ratio3': 'كل 3 ثوانٍ يحدث كسر بسبب الهشاشة',
+            'ratio4': 'من الكسور تحدث في الفقرات',
+            'future-warning-title': 'توقع زيادة في الحالات',
+            'future-warning-desc': 'من المتوقع أن تزيد حالات كسور الورك بسبب هشاشة العظام بنسبة 310% لدى النساء و240% لدى الرجال بحلول عام 2050، مما يزيد أهمية التوعية والكشف المبكر.',
+            
+            // الصفحة 10
+            'calculator-title': 'حاسبة خطر هشاشة العظام',
+            'calculator-form-title': 'أدخل بياناتك',
+            'calc-age': 'العمر (سنوات)',
+            'calc-gender': 'الجنس',
+            'calc-weight': 'الوزن (كجم)',
+            'calc-height': 'الطول (سم)',
+            'calc-smoking-label': 'هل تدخن؟',
+            'calc-smoking-yes': 'نعم',
+            'calc-smoking-no': 'لا',
+            'calc-family-label': 'هل يوجد تاريخ عائلي للمرض؟',
+            'calc-family-yes': 'نعم',
+            'calc-family-no': 'لا',
+            'calc-activity-label': 'مستوى النشاط البدني',
+            'calc-activity-low': 'منخفض (لا تمارين)',
+            'calc-activity-moderate': 'متوسط (تمارين خفيفة)',
+            'calc-activity-high': 'مرتفع (تمارين منتظمة)',
+            'calc-btn': 'احسب مستوى الخطورة',
+            'result-title': 'نتيجة التقييم:',
+            'risk-level-label': 'مستوى الخطورة:',
+            'risk-low': 'منخفض',
+            'risk-moderate': 'متوسط',
+            'risk-high': 'مرتفع',
+            'recommendations-title': 'التوصيات:',
+            'calc-info-title': 'معلومات عن الحاسبة',
+            'calc-info-desc': 'هذه الحاسبة تستند إلى نموذج FRAX المعدل لتقييم خطر الإصابة بهشاشة العظام. النتائج هي لأغراض توعوية فقط ولا تغني عن استشارة الطبيب.',
+            
+            // الصفحة 11
+            'thanks-title': 'شكر وتقدير',
+            'supervisor-thanks-name': 'المشرف: الدكتور محمد العنزي',
+            'supervisor-thanks-role': 'المشرف الأكاديمي والملهم الرئيسي للمشروع',
+            'thanks-message-1': 'كل الشكر والتقدير لجهوده القيمة وتوجيهاته السديدة التي كانت الدافع الأساسي لإنجاز هذا المشروع التوعوي المهم.',
+            'thanks-message-2': 'كان خير مرشد ومعلم، وقد أثرى العمل بأفكاره الثرية وخبرته الواسعة في مجال صحة العظام.',
+            'thanks-quality1': 'الإلهام',
+            'thanks-quality1-desc': 'الفكرة الأولى والمحرك الرئيسي',
+            'thanks-quality2': 'التوجيه',
+            'thanks-quality2-desc': 'الإشراف العلمي الدقيق',
+            'thanks-quality3': 'الدعم',
+            'thanks-quality3-desc': 'المساندة المستمرة طوال المشروع',
+            'final-thanks': 'تَسِيَّة مَرْزِيَّون',
+            'project-year': 'مشروع تخرج 2023'
+        };
+        
+        const englishContent = {
+            // Titles
+            'site-title': 'University of Hafr Al-Batin',
+            'site-subtitle': 'College of Applied Medical Sciences - Nursing Department',
+            'lang-text': 'العربية',
+            
+            // Navigation
+            'nav-home': 'Home',
+            'nav-about': 'Definition',
+            'nav-causes': 'Causes',
+            'nav-symptoms': 'Symptoms',
+            'nav-comparison': 'Comparison',
+            'nav-diagnosis': 'Diagnosis',
+            'nav-treatment': 'Treatment',
+            'nav-prevention': 'Prevention',
+            'nav-statistics': 'Statistics',
+            'nav-calculator': 'Calculator',
+            'nav-thanks': 'Thanks',
+            
+            // Page 1
+            'hero-title': 'Early Osteoporosis',
+            'hero-subtitle': 'Early Detection... Lasting Prevention',
+            'hero-description': 'A comprehensive awareness project about early osteoporosis, aiming to raise health awareness and provide accurate scientific information for prevention and early detection.',
+            'team-title': 'Our Team',
+            'student1-name': 'Turki Al-Jadaan',
+            'student2-name': 'Raed Al-Ghamdi',
+            'student3-name': 'Abdullatif Al-Ghamdi',
+            'supervisor-name': 'Supervisor: Dr. Mohammed Al-Anzi',
+            'supervisor-role': 'Project Supervisor and Main Inspiration',
+            'start-btn': 'Start Knowledge Journey',
+            
+            // Page 2
+            'about-title': 'Definition of Early Osteoporosis',
+            'definition-title': 'What is Osteoporosis?',
+            'definition-desc': 'Osteoporosis is a silent disease characterized by reduced bone density and deterioration of its microarchitecture, leading to increased fragility and higher risk of fractures. Under normal conditions, bones are constantly renewed, but with aging or due to other factors, the balance between bone resorption and formation is disrupted, leading to bone weakness.',
+            'important-note': 'Osteoporosis is known as the "silent thief" because it steals bone strength without obvious symptoms until a fracture occurs!',
+            'image1-title': 'Bones Affected by Osteoporosis',
+            'image1-desc': 'Note the large spaces between the internal bone network',
+            'stat1-title': 'Women',
+            'stat1-desc': 'Most at risk',
+            'stat2-title': 'After 50',
+            'stat2-desc': 'Risk increases after this age',
+            'feature1-title': 'Loss of Density',
+            'feature1-desc': 'Gradual loss of bone mineral density',
+            'feature2-title': 'Structural Change',
+            'feature2-desc': 'Change in bone microarchitecture',
+            'feature3-title': 'Increased Fragility',
+            'feature3-desc': 'Higher risk of fractures even with minor trauma',
+            
+            // Page 3
+            'causes-title': 'Causes and Risk Factors of Osteoporosis',
+            'main-causes-title': 'Main Causes',
+            'cause1-title': 'Estrogen Deficiency',
+            'cause1-desc': 'Especially after menopause in women, which accelerates bone loss',
+            'cause2-title': 'Certain Medications',
+            'cause2-desc': 'Such as long-term corticosteroid use',
+            'cause3-title': 'Genetic Factors',
+            'cause3-desc': 'Family history of osteoporosis or hip fractures',
+            'risk-factors-title': 'Other Risk Factors',
+            'risk1': 'Smoking',
+            'risk2': 'Alcohol',
+            'risk3': 'Inactivity',
+            'risk4': 'Poor Nutrition',
+            'image2-title': 'Multiple Factors Causing Osteoporosis',
+            'image2-desc': 'Smoking, alcohol, inactivity, poor nutrition',
+            'prevention-tip-title': 'Prevention Tip',
+            'prevention-tip-desc': '50% of osteoporosis cases can be prevented through proper nutrition, regular exercise, and avoiding risk factors.',
+            'prevention-tip-btn': 'Learn About Prevention Methods',
+            
+            // Page 4
+            'symptoms-title': 'Osteoporosis Symptoms',
+            'symptoms-desc-title': 'Silent disease without clear early symptoms',
+            'symptoms-desc': 'Osteoporosis often shows no symptoms in its early stages, which is why it\'s called the "silent thief." Symptoms begin to appear after the disease reaches advanced stages and fractures occur.',
+            'symptom1-title': 'Height Loss',
+            'symptom1-desc': 'Loss of more than 3 cm of total height with aging',
+            'symptom2-title': 'Stooped Posture',
+            'symptom2-desc': 'Gradual curvature in the upper back (Dowager\'s hump)',
+            'symptom3-title': 'Easy Fractures',
+            'symptom3-desc': 'Fractures from low-height falls or even without obvious cause',
+            'symptom4-title': 'Back Pain',
+            'symptom4-desc': 'Chronic lower back pain due to compression fractures in vertebrae',
+            'warning-title': 'Important Warning',
+            'warning-desc': 'When experiencing any of these symptoms, especially after age 50 or after menopause, a doctor should be consulted for a bone density test.',
+            
+            // Page 5
+            'comparison-title': 'Comparison Between Normal and Osteoporotic Bones',
+            'healthy-title': 'Normal Bones',
+            'healthy1': 'High density and cohesive',
+            'healthy2': 'Small spaces between bone network',
+            'healthy3': 'High pressure resistance',
+            'osteoporosis-title': 'Affected Bones',
+            'osteoporosis1': 'Low density and fragile',
+            'osteoporosis2': 'Large spaces between bone network',
+            'osteoporosis3': 'Weak pressure resistance and easy fractures',
+            'comparison-stat1': 'Decrease in bone density in advanced cases',
+            'comparison-stat2': 'Increased fracture risk compared to normal bones',
+            'comparison-stat3': 'of vertebral fractures cause no obvious pain initially',
+            
+            // Page 6
+            'diagnosis-title': 'Osteoporosis Diagnosis Methods',
+            'dexa-title': 'DEXA Scan (Gold Standard)',
+            'dexa-desc': 'Dual-energy X-ray absorptiometry (DEXA) scan is the most accurate method for diagnosing osteoporosis. It measures bone mineral density in the hip and spine.',
+            't-score-title': 'T-score Results Interpretation:',
+            't-score1': 'T-score ≥ -1: Normal',
+            't-score2': 'T-score between -1 and -2.5: Osteopenia',
+            't-score3': 'T-score ≤ -2.5: Osteoporosis',
+            'other-tests-title': 'Other Tests',
+            'test1': 'Blood Tests',
+            'test1-desc': 'Measuring calcium, vitamin D, and others',
+            'test2': 'Regular X-rays',
+            'test2-desc': 'To detect compression fractures',
+            'test3': 'Genetic Testing',
+            'test3-desc': 'To assess genetic predisposition',
+            'test4': 'Clinical Assessment',
+            'test4-desc': 'Doctor examination and medical history',
+            'diagnosis-image-title': 'DEXA Scan Device',
+            'diagnosis-image-desc': 'The most accurate device for measuring bone density',
+            'when-to-test-title': 'When Should You Get Tested?',
+            'when1': 'All women over 65 years',
+            'when2': 'Women over 50 with risk factors',
+            'when3': 'Men over 70 years',
+            'when4': 'Anyone who experienced a fracture after age 50',
+            'test-btn': 'Calculate Your Risk',
+            
+            // Page 7
+            'treatment-title': 'Osteoporosis Treatment',
+            'treatment-approach-title': 'Comprehensive Treatment Approach',
+            'treatment-approach-desc': 'Osteoporosis treatment is based on a multifaceted approach including medications, nutrition, exercise, and lifestyle modifications. The main goal is to prevent further bone loss and reduce fracture risk.',
+            'medication-title': 'Medications',
+            'medication1': '• Bisphosphonates (like Alendronate)',
+            'medication2': '• Denosumab (Prolia)',
+            'medication3': '• Teriparatide (Forteo)',
+            'medication4': '• Hormone Replacement Therapy',
+            'nutrition-title': 'Nutritional Supplements',
+            'nutrition1': '• Calcium (1000-1200 mg daily)',
+            'nutrition2': '• Vitamin D (800-1000 IU daily)',
+            'nutrition3': '• Magnesium and Zinc',
+            'nutrition4': '• Vitamin K',
+            'exercise-title': 'Physical Exercise',
+            'exercise1': '• Weight-bearing exercises',
+            'exercise2': '• Resistance exercises',
+            'exercise3': '• Balance exercises',
+            'exercise4': '• Flexibility exercises',
+            'doctor-advice-title': 'Important Medical Advice',
+            'doctor-advice-desc': 'The appropriate treatment should be chosen for each patient based on their health condition, age, risk factors, and bone density test results. Consult your doctor before starting any treatment.',
+            
+            // Page 8
+            'prevention-title': 'Osteoporosis Prevention',
+            'prevention-strategy-title': 'Prevention Strategies',
+            'strategy1-title': 'Balanced Nutrition',
+            'strategy1-desc': 'Ensuring adequate intake of calcium and vitamin D from an early age',
+            'strategy2-title': 'Regular Physical Activity',
+            'strategy2-desc': 'Regular exercise especially weight-bearing exercises',
+            'strategy3-title': 'Avoid Harmful Factors',
+            'strategy3-desc': 'Quitting smoking and limiting alcohol consumption',
+            'prevention-tips-title': 'Daily Prevention Tips',
+            'tip1': 'Sun Exposure',
+            'tip1-desc': '15 minutes daily for vitamin D production',
+            'tip2': 'Healthy Weight',
+            'tip2-desc': 'Maintaining appropriate weight',
+            'tip3': 'Adequate Sleep',
+            'tip3-desc': '7-8 hours of sleep per night',
+            'tip4': 'Periodic Check-ups',
+            'tip4-desc': 'Bone density testing as recommended',
+            'prevention-image-title': 'Prevention Exercises',
+            'prevention-image-desc': 'Regular exercises build stronger bones',
+            'prevention-fact-title': 'Scientific Fact',
+            'prevention-fact-desc': 'Building strong bones during youth (up to age 30) is the best investment for preventing osteoporosis in old age. Bones reach peak density in the third decade of life.',
+            'prevention-quote': 'Prevention is better than cure',
+            
+            // Page 9
+            'statistics-title': 'Osteoporosis Statistics',
+            'global-statistics-title': 'Global Statistics',
+            'global-stat1-title': 'Prevalence Among Women:',
+            'global-stat1-desc': 'One in 3 women over 50 develops osteoporosis',
+            'global-stat2-title': 'Prevalence Among Men:',
+            'global-stat2-desc': 'One in 5 men over 50 develops osteoporosis',
+            'global-stat3-title': 'Annual Fractures:',
+            'global-stat3-desc': '8.9 million fractures annually due to osteoporosis worldwide',
+            'saudi-statistics-title': 'Local Statistics (Saudi Arabia)',
+            'saudi-stat1-label': 'Vitamin D Deficiency:',
+            'saudi-stat2-label': 'Calcium Deficiency:',
+            'saudi-stat3-label': 'Low Physical Activity:',
+            'saudi-stat4-label': 'Late Diagnosis:',
+            'chart-title': 'Comparison of Incidence Rates by Age and Gender',
+            'ratio1': '1 in 3 women over 50 years',
+            'ratio2': '1 in 5 men over 50 years',
+            'ratio3': 'Every 3 seconds a fracture occurs due to osteoporosis',
+            'ratio4': 'of fractures occur in vertebrae',
+            'future-warning-title': 'Expected Increase in Cases',
+            'future-warning-desc': 'Hip fracture cases due to osteoporosis are expected to increase by 310% in women and 240% in men by 2050, increasing the importance of awareness and early detection.',
+            
+            // Page 10
+            'calculator-title': 'Osteoporosis Risk Calculator',
+            'calculator-form-title': 'Enter Your Information',
+            'calc-age': 'Age (years)',
+            'calc-gender': 'Gender',
+            'calc-weight': 'Weight (kg)',
+            'calc-height': 'Height (cm)',
+            'calc-smoking-label': 'Do you smoke?',
+            'calc-smoking-yes': 'Yes',
+            'calc-smoking-no': 'No',
+            'calc-family-label': 'Family history of the disease?',
+            'calc-family-yes': 'Yes',
+            'calc-family-no': 'No',
+            'calc-activity-label': 'Physical Activity Level',
+            'calc-activity-low': 'Low (no exercise)',
+            'calc-activity-moderate': 'Moderate (light exercise)',
+            'calc-activity-high': 'High (regular exercise)',
+            'calc-btn': 'Calculate Risk Level',
+            'result-title': 'Assessment Result:',
+            'risk-level-label': 'Risk Level:',
+            'risk-low': 'Low',
+            'risk-moderate': 'Moderate',
+            'risk-high': 'High',
+            'recommendations-title': 'Recommendations:',
+            'calc-info-title': 'About the Calculator',
+            'calc-info-desc': 'This calculator is based on the modified FRAX model for assessing osteoporosis risk. Results are for awareness purposes only and do not replace medical consultation.',
+            
+            // Page 11
+            'thanks-title': 'Thanks and Appreciation',
+            'supervisor-thanks-name': 'Supervisor: Dr. Mohammed Al-Anzi',
+            'supervisor-thanks-role': 'Academic Supervisor and Main Inspiration of the Project',
+            'thanks-message-1': 'All thanks and appreciation for his valuable efforts and insightful guidance that were the main motivation for accomplishing this important awareness project.',
+            'thanks-message-2': 'He was the best guide and teacher, enriching the work with his rich ideas and extensive experience in the field of bone health.',
+            'thanks-quality1': 'Inspiration',
+            'thanks-quality1-desc': 'The first idea and main driver',
+            'thanks-quality2': 'Guidance',
+            'thanks-quality2-desc': 'Accurate scientific supervision',
+            'thanks-quality3': 'Support',
+            'thanks-quality3-desc': 'Continuous support throughout the project',
+            'final-thanks': 'With sincere thanks',
+            'project-year': 'Graduation Project 2023'
+        };
+
+        // إدارة الصفحات
+        let currentPage = 0;
+        const totalPages = 11;
+
+        function goToPage(pageNumber) {
+            // إخفاء الصفحة الحالية
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // إخفاء الروابط النشطة
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // إظهار الصفحة المطلوبة
+            document.getElementById(`page-${pageNumber + 1}`).classList.add('active');
+            
+            // تحديث الرابط النشط
+            document.querySelectorAll('.nav-link')[pageNumber].classList.add('active');
+            
+            // تحديث مؤشر الصفحات
+            document.querySelectorAll('.page-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === pageNumber);
+            });
+            
+            // تحديث الصفحة الحالية
+            currentPage = pageNumber;
+            
+            // الانتقال لأعلى الصفحة
+            window.scrollTo(0, 0);
+            
+            // إنشاء مخطط تفاعلي للصفحة 9 (الإحصائيات)
+            if (pageNumber === 8) {
+                setTimeout(createStatisticsChart, 300);
+            }
+            
+            // تحديث زر العودة للأعلى
+            updateFloatingButton();
+        }
+
+        // تبديل اللغة
+        function toggleLanguage() {
+            isEnglish = !isEnglish;
+            
+            // تبديل اتجاه الصفحة
+            if (isEnglish) {
+                document.body.classList.add('english');
+                document.body.dir = 'ltr';
+            } else {
+                document.body.classList.remove('english');
+                document.body.dir = 'rtl';
+            }
+            
+            // تحديث جميع النصوص
+            const content = isEnglish ? englishContent : arabicContent;
+            Object.keys(content).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = content[key];
+                }
+            });
+            
+            // تحديث نص زر اللغة
+            document.getElementById('lang-text').textContent = isEnglish ? 'العربية' : 'English';
+            
+            // إعادة إنشاء المخطط إذا كان مرئياً
+            if (currentPage === 8) {
+                setTimeout(createStatisticsChart, 300);
+            }
+        }
+
+        // إنشاء مخطط الإحصائيات
+        function createStatisticsChart() {
+            const chartContainer = document.getElementById('statistics-chart');
+            if (!chartContainer) return;
+            
+            chartContainer.innerHTML = '';
+            
+            const data = [
+                { label: isEnglish ? 'Women 30-50' : 'نساء 30-50', value: 5, color: '#e74c3c' },
+                { label: isEnglish ? 'Men 30-50' : 'رجال 30-50', value: 3, color: '#3498db' },
+                { label: isEnglish ? 'Women 50-70' : 'نساء 50-70', value: 33, color: '#e74c3c' },
+                { label: isEnglish ? 'Men 50-70' : 'رجال 50-70', value: 20, color: '#3498db' },
+                { label: isEnglish ? 'Women 70+' : 'نساء 70+', value: 50, color: '#e74c3c' },
+                { label: isEnglish ? 'Men 70+' : 'رجال 70+', value: 30, color: '#3498db' }
+            ];
+            
+            const barWidth = 90 / data.length;
+            
+            data.forEach((item, index) => {
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.left = `${5 + index * (barWidth + 2)}%`;
+                bar.style.width = `${barWidth}%`;
+                bar.style.height = '0%';
+                bar.style.background = item.color;
+                bar.dataset.value = item.value;
+                
+                const label = document.createElement('div');
+                label.className = 'chart-label';
+                label.style.left = `${5 + index * (barWidth + 2)}%`;
+                label.style.width = `${barWidth}%`;
+                label.textContent = item.label;
+                
+                chartContainer.appendChild(bar);
+                chartContainer.appendChild(label);
+                
+                // تحريك الأشرطة مع تأثير
+                setTimeout(() => {
+                    bar.style.height = `${item.value}%`;
+                }, index * 200 + 300);
+            });
+        }
+
+        // حاسبة الخطورة
+        function calculateRisk() {
+            const age = parseInt(document.getElementById('calc-age').value) || 50;
+            const gender = document.getElementById('calc-gender').value;
+            const weight = parseInt(document.getElementById('calc-weight').value) || 70;
+            const height = parseInt(document.getElementById('calc-height').value) || 170;
+            const smoking = document.querySelector('input[name="smoking"]:checked').value;
+            const family = document.querySelector('input[name="family"]:checked').value;
+            const activity = document.getElementById('calc-activity').value;
+            
+            let score = 0;
+            
+            // العمر
+            if (age < 40) score += 0;
+            else if (age < 50) score += 1;
+            else if (age < 60) score += 3;
+            else if (age < 70) score += 5;
+            else score += 7;
+            
+            // الجنس
+            if (gender === 'female') score += 4;
+            
+            // مؤشر كتلة الجسم
+            const bmi = weight / ((height/100) ** 2);
+            if (bmi < 18.5) score += 3;
+            else if (bmi < 25) score += 1;
+            
+            // التدخين
+            if (smoking === 'yes') score += 3;
+            
+            // التاريخ العائلي
+            if (family === 'yes') score += 3;
+            
+            // النشاط البدني
+            if (activity === 'low') score += 3;
+            else if (activity === 'moderate') score += 1;
+            
+            // تحديد مستوى الخطورة
+            let riskLevel, riskText, riskPercent, recommendations, color;
+            
+            if (score <= 8) {
+                riskLevel = isEnglish ? 'Low Risk' : 'خطورة منخفضة';
+                riskText = isEnglish ? 'You have a low risk of developing osteoporosis. Continue with your healthy lifestyle.' : 'لديك مستوى خطورة منخفض للإصابة بهشاشة العظام. استمر في نمط حياتك الصحي.';
+                riskPercent = 25;
+                recommendations = isEnglish 
+                    ? ['Maintain adequate calcium and vitamin D intake', 'Continue regular exercise', 'Get regular check-ups after age 50']
+                    : ['الحفاظ على تناول كافٍ من الكالسيوم وفيتامين د', 'الاستمرار في ممارسة التمارين المنتظمة', 'إجراء فحوصات دورية بعد سن 50'];
+                color = '#2ecc71';
+            } else if (score <= 15) {
+                riskLevel = isEnglish ? 'Moderate Risk' : 'خطورة متوسطة';
+                riskText = isEnglish ? 'You have a moderate risk of developing osteoporosis. Consider lifestyle changes and consult a doctor.' : 'لديك مستوى خطورة متوسط للإصابة بهشاشة العظام. فكر في تغييرات نمط الحياة واستشر طبيباً.';
+                riskPercent = 50;
+                recommendations = isEnglish
+                    ? ['Increase calcium and vitamin D intake', 'Start weight-bearing exercises', 'Consider a bone density test', 'Avoid smoking and limit alcohol']
+                    : ['زيادة تناول الكالسيوم وفيتامين د', 'بدء تمارين حمل الأثقال', 'التفكير في إجراء فحص كثافة العظام', 'تجنب التدخين والحد من الكحول'];
+                color = '#f39c12';
+            } else {
+                riskLevel = isEnglish ? 'High Risk' : 'خطورة مرتفعة';
+                riskText = isEnglish ? 'You have a high risk of developing osteoporosis. Consult a doctor immediately for evaluation and treatment.' : 'لديك مستوى خطورة مرتفع للإصابة بهشاشة العظام. استشر طبيباً فوراً للتقييم والعلاج.';
+                riskPercent = 85;
+                recommendations = isEnglish
+                    ? ['Consult a bone specialist immediately', 'Perform a bone density test (DEXA)', 'Start medical treatment if needed', 'Implement fall prevention strategies']
+                    : ['استشارة أخصائي عظام فوراً', 'إجراء فحص كثافة العظام (DEXA)', 'بدء العلاج الطبي إذا لزم الأمر', 'تنفيذ استراتيجيات الوقاية من السقوط'];
+                color = '#e74c3c';
+            }
+            
+            // عرض النتائج
+            document.getElementById('risk-level').textContent = riskLevel;
+            document.getElementById('risk-level').style.color = color;
+            
+            const riskBar = document.getElementById('risk-bar');
+            riskBar.style.width = `${riskPercent}%`;
+            riskBar.style.background = `linear-gradient(to right, ${color}, ${color}99)`;
+            
+            document.getElementById('risk-description').textContent = riskText;
+            
+            const recommendationsList = document.getElementById('recommendations-list');
+            recommendationsList.innerHTML = '';
+            
+            recommendations.forEach(rec => {
+                const li = document.createElement('li');
+                li.className = 'flex items-start';
+                li.innerHTML = `<i class="fas fa-check mt-1 ml-3" style="color: ${color};"></i><span>${rec}</span>`;
+                recommendationsList.appendChild(li);
+            });
+            
+            // إظهار نتيجة الحاسبة
+            document.getElementById('calc-result').style.display = 'block';
+            
+            // الانتقال لنتيجة الحاسبة
+            setTimeout(() => {
+                document.getElementById('calc-result').scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+        }
+
+        // تحديث زر العودة للأعلى
+        function updateFloatingButton() {
+            const floatingBtn = document.querySelector('.floating-btn');
+            if (window.scrollY > 300 || currentPage > 0) {
+                floatingBtn.classList.add('show');
+            } else {
+                floatingBtn.classList.remove('show');
+            }
+        }
+
+        // تهيئة التطبيق
+        function initApp() {
+            // إنشاء مخطط الإحصائيات
+            createStatisticsChart();
+            
+            // تحديث زر العودة للأعلى عند التمرير
+            window.addEventListener('scroll', updateFloatingButton);
+            
+            // إضافة التنقل باستخدام مفاتيح الأسهم
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (currentPage < totalPages - 1) {
+                        goToPage(currentPage + 1);
+                    }
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (currentPage > 0) {
+                        goToPage(currentPage - 1);
+                    }
+                }
+            });
+            
+            // تحديث زر العودة للأعلى عند تحميل الصفحة
+            updateFloatingButton();
+        }
+
+        // تهيئة التطبيق عند تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', initApp);
+        
+        // تحديث المخطط عند تغيير حجم النافذة
+        window.addEventListener('resize', () => {
+            if (currentPage === 8) {
+                createStatisticsChart();
+            }
+        });
+    </script>
+</body>
+</html>
